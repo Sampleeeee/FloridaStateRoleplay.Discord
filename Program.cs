@@ -70,6 +70,9 @@ public class Program
     /// <returns>Was there a link deleted?</returns>
     private async Task<bool> DeleteLinksAsync( MessageCreateEventArgs e )
     {
+        // TODO comment this out until we have a list of whitelisted links
+        
+        /*
         var text = e.Message.Content.ToLower();
         
         if ( text.Contains( "https://" ) || text.Contains( "http://" ) )
@@ -83,6 +86,7 @@ public class Program
             await e.Message.DeleteAsync();
             return true;
         }
+        */
         
         return false;
     }
