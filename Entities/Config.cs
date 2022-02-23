@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FloridaStateRoleplay.Discord.Entities;
+using Newtonsoft.Json;
 
 namespace FloridaStateRoleplay.Discord;
 
@@ -10,6 +11,10 @@ public class Config
     public string Token { get; set; } = "OTIzNzk3MTc3NzAzMjE5MjIx.YcVPKg.DSxQB8i74TvUyO1wlet-9vMTNOo";
 
     public ulong LevelUpChannelId = 917912579312087146;
+
+    public List<Sticky> Stickies { get; set; } = new();
+
+    public bool LevelingEnabled { get; set; } = true;
 
     public ulong[] Ranks { get; set; } =
     {

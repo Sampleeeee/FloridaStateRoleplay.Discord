@@ -1,7 +1,10 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using DSharpPlus.Exceptions;
+using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
+using DSharpPlus.SlashCommands.EventArgs;
 using FloridaStateRoleplay.Discord.Commands;
 using FloridaStateRoleplay.Discord.Entities;
 using FloridaStateRoleplay.Discord.Extensions;
@@ -19,7 +22,7 @@ public class Program
     
     public static DiscordGuild FloridaStateRoleplay { get; set; }
     public static DiscordClient Discord { get; set; }
-    
+
     private static void Main( string[] args )
     {
         Config.Current = new Config();
@@ -48,26 +51,69 @@ public class Program
             AutoReset = true
         };
 
+        var interactivity = Discord.UseInteractivity();
+
         timer.Elapsed += ( _, _ ) => UpdateMembers().GetAwaiter().GetResult();
         timer.Start();
         
         Discord.GuildMemberAdded += OnMemberAdded;
         Discord.GuildMemberRemoved += OnMemberRemoved;
         Discord.MessageCreated += OnMessageCreated;
-
+        
+        commands.SlashCommandErrored += OnSlashCommandErrored;
+        
         await Discord.ConnectAsync();
         await Task.Delay( -1 );
+    }
+
+    private Task OnSlashCommandErrored( SlashCommandsExtension sender, SlashCommandErrorEventArgs e )
+    {
+        var embed = new DiscordEmbedBuilder
+        {
+            Title = "Command Errored",
+            Description = $"The command {e.Context.CommandName} has encountered an `{e.Exception.GetType()}` exception.",
+            Color = DiscordColor.DarkRed
+        };
+
+        if ( e.Exception is not BadRequestException badRequest )
+            embed.AddField( $"`{e.Exception.GetType()}.Message`", $"```{e.Exception.Message}```" );
+        else
+        {
+            embed.AddField( "`BadRequestException.JsonMessage`", $"```{badRequest.JsonMessage}```" );
+            embed.AddField( "`BadRequestException.Errors`", $"```{badRequest.Errors}```" );
+        }
+        
+        e.Context.Channel.SendMessageAsync( embed );
+        return Task.CompletedTask;
     }
 
     private async Task OnMessageCreated( DiscordClient sender, MessageCreateEventArgs e )
     {
         await HandleLevels( e );
+        await HandleSticky( e );
+    }
+
+    private async Task HandleSticky( MessageCreateEventArgs e )
+    {
+        var sticky = Config.Current.Stickies.FirstOrDefault( x => x.Channel == e.Channel.Id );
+        if ( sticky is null ) return;
+        if ( sticky.LastMessage == e.Message.Id ) return;
+
+        if ( sticky.LastMessage != 0 )
+        {
+            var message = await e.Channel.GetMessageAsync( sticky.LastMessage );
+            await message.DeleteAsync();
+        }
+
+        var response = await e.Channel.SendMessageAsync( $"__**{sticky.Title}**__\n{sticky.Message}" );
+        sticky.LastMessage = response?.Id ?? 0;
     }
 
     private async Task HandleLevels( MessageCreateEventArgs e )
     {
+        if ( !Config.Current.LevelingEnabled ) return;
         if ( e.Author.IsBot ) return;
-        
+
         var member = await Member.FromId( e.Author.Id );
         
         if ( member is null ) return;

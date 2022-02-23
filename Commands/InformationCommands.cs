@@ -124,14 +124,10 @@ public class InformationCommands : ApplicationCommandModule
     [SlashCommand( "getallbirthdays", "Get every member's birthday in our database." )]
     public async Task GetAllBirthdaysCommandAsync( InteractionContext ctx )
     {
-        var response = string.Empty;
+        string response = ( from member in Member.All where member.DiscordMember is not null where member.Birthday is not null select member ).Aggregate( string.Empty, ( current, member ) => current + $"**{member.DiscordMember.DisplayName}**: {member.Birthday.Date:d}\n" );
 
-        foreach ( var member in Member.All )
-        {
-            if ( member.DiscordMember is null ) continue;
-            if ( member.Birthday is null ) continue;
-            response += $"**{member.DiscordMember.DisplayName}**: {member.Birthday.Date:d}\n";
-        }
+        if ( response == string.Empty )
+            response = "No birthdays have been set!";
         
         await ctx.RespondAsync( response );
     }

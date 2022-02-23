@@ -1,4 +1,5 @@
-﻿using DSharpPlus.Entities;
+﻿using DSharpPlus;
+using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using FloridaStateRoleplay.Discord.Entities;
 using FloridaStateRoleplay.Discord.Extensions;
@@ -524,5 +525,73 @@ public class ModerationCommands : ApplicationCommandModule
 
         await member.Save();
         await ctx.RespondAsEphemeralAsync( $"Successfully added {amount} messages to {member.Mention}" );
+    }
+
+    [SlashCommand( "sticky", "Stick a message to the bottom of the current channel." )]
+    private async Task StickyCommandAsync( InteractionContext ctx,
+        [Option( "title", "The title of the sticky" )] string title,
+        [Option( "text", "The text of the sticky" )] string text )
+    {
+        if ( !ctx.Member.IsStaff() )
+        {
+            await ctx.RespondAsEphemeralAsync( "You do not have permission to use this command." );
+
+            var builder = new DiscordEmbedBuilder
+            {
+                Title = "Insufficient Permissions",
+                Description =
+                    $"{ctx.Member.Mention} tried to run command '/sticky' but does not have the proper permissions."
+            };
+
+            builder.AddField( "Title", title );
+            builder.AddField( "Reason", text );
+
+            await Program.StaffModLogAsync( builder );
+
+            return;
+        }
+
+        List<Sticky> stickies = Config.Current.Stickies.Where( x => x.Channel == ctx.Channel.Id ).ToList();
+
+        foreach ( var sticky in stickies )
+            Config.Current.Stickies.Remove( sticky );
+
+        Config.Current.Stickies.Add( new Sticky
+        {
+            Title = title,
+            Message = text,
+            Channel = ctx.Channel.Id
+        } );
+
+        await ctx.Interaction.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
+            new DiscordInteractionResponseBuilder().WithContent( "Sticky updated." ) );
+    }
+
+    [SlashCommand( "unsticky", "Stick a message to the bottom of the current channel." )]
+    private async Task UnstickyCommandAsync( InteractionContext ctx )
+    {
+        if ( !ctx.Member.IsStaff() )
+        {
+            await ctx.RespondAsEphemeralAsync( "You do not have permission to use this command." );
+
+            var builder = new DiscordEmbedBuilder
+            {
+                Title = "Insufficient Permissions",
+                Description =
+                    $"{ctx.Member.Mention} tried to run command '/unsticky' but does not have the proper permissions."
+            };
+
+            await Program.StaffModLogAsync( builder );
+
+            return;
+        }
+
+        List<Sticky> stickies = Config.Current.Stickies.Where( x => x.Channel == ctx.Channel.Id ).ToList();
+
+        foreach ( var sticky in stickies )
+            Config.Current.Stickies.Remove( sticky );
+        
+        await ctx.Interaction.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
+            new DiscordInteractionResponseBuilder().WithContent( "Sticky removed." ) );
     }
 }
