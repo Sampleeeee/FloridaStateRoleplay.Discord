@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -59,6 +60,7 @@ public class Program
         Discord.GuildMemberAdded += OnMemberAdded;
         Discord.GuildMemberRemoved += OnMemberRemoved;
         Discord.MessageCreated += OnMessageCreated;
+        Discord.ComponentInteractionCreated += OnComponentIntractionCreated;
         
         commands.SlashCommandErrored += OnSlashCommandErrored;
         
@@ -66,6 +68,27 @@ public class Program
         await Task.Delay( -1 );
     }
 
+    private async Task OnComponentIntractionCreated( DiscordClient sender, ComponentInteractionCreateEventArgs e )
+    {
+        await HandleSuggestionButton( e );
+    }
+
+    private async Task HandleSuggestionButton( ComponentInteractionCreateEventArgs e )
+    {
+        if ( e.Id != "create_feature_request" ) return;
+
+        var modal = UtilityCommands.GetFeatureRequestModal();
+        await e.Interaction.CreateResponseAsync( InteractionResponseType.Modal, modal );
+    }
+
+    private async Task HandleBugReportButton( ComponentInteractionCreateEventArgs e )
+    {
+        if ( e.Id != "create_bug_report" ) return;
+
+        var modal = UtilityCommands.GetBugReportModal();
+        await e.Interaction.CreateResponseAsync( InteractionResponseType.Modal, modal );
+    }
+    
     private Task OnSlashCommandErrored( SlashCommandsExtension sender, SlashCommandErrorEventArgs e )
     {
         var embed = new DiscordEmbedBuilder

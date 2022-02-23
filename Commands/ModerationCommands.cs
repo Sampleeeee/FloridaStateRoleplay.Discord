@@ -565,6 +565,8 @@ public class ModerationCommands : ApplicationCommandModule
 
         await ctx.Interaction.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().WithContent( "Sticky updated." ) );
+
+        Config.Save();
     }
 
     [SlashCommand( "unsticky", "Stick a message to the bottom of the current channel." )]
@@ -593,5 +595,7 @@ public class ModerationCommands : ApplicationCommandModule
         
         await ctx.Interaction.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().WithContent( "Sticky removed." ) );
+
+        Config.Save();
     }
 }

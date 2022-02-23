@@ -1,22 +1,100 @@
 ﻿using FloridaStateRoleplay.Discord.Entities;
 using Newtonsoft.Json;
 
+
 namespace FloridaStateRoleplay.Discord;
 
 public class Config
 {
     public static Config Current { get; set; }
-    
-    public Dictionary<string, ulong> Channels { get; set; } = new();
-    public string Token { get; set; } = "OTIzNzk3MTc3NzAzMjE5MjIx.YcVPKg.DSxQB8i74TvUyO1wlet-9vMTNOo";
 
-    public ulong LevelUpChannelId = 917912579312087146;
+    private Dictionary<string, ulong> _channels = new();
 
-    public List<Sticky> Stickies { get; set; } = new();
+    public Dictionary<string, ulong> Channels
+    {
+        get => _channels;
+        
+        set
+        {
+            _channels = value;
+            Save();
+        }
+    }
 
-    public bool LevelingEnabled { get; set; } = true;
+    private string _token = "OTIzNzk3MTc3NzAzMjE5MjIx.YcVPKg.DSxQB8i74TvUyO1wlet-9vMTNOo";
 
-    public ulong[] Ranks { get; set; } =
+    public string Token
+    {
+        get => _token;
+
+        set
+        {
+            _token = value;
+            Save();
+        }
+    }
+
+    private ulong _levelUpChannelId = 917912579312087146;
+
+    public ulong LevelUpChannelId
+    {
+        get => _levelUpChannelId;
+        set
+        {
+            _levelUpChannelId = value;
+            Save();
+        }
+    }
+
+    private List<Sticky> _stickies = new();
+
+    public List<Sticky> Stickies
+    {
+        get => _stickies;
+        set
+        {
+            _stickies = value;
+            Save();
+        }
+    }
+
+    private bool _levelingEnabled = true;
+
+    public bool LevelingEnabled
+    {
+        get => _levelingEnabled;
+        set
+        {
+            _levelingEnabled = value;
+            Save();
+        }
+    }
+
+    private ulong _lastBugReportMessage;
+
+    public ulong LastBugReportMessage
+    {
+        get => _lastBugReportMessage;
+        set
+        {
+            _lastBugReportMessage = value;
+            Save();
+        }
+    }
+
+    private ulong _lastFeatureReportMessage;
+
+    public ulong LastFeatureReportMessage
+    {
+        get => _lastFeatureReportMessage;
+        set
+        {
+            _lastFeatureReportMessage = value;
+            Save();
+        }
+    }
+
+    private ulong[] _ranks =
     {
         0,
         100,
@@ -120,6 +198,17 @@ public class Config
         1845195,
         1899250
     };
+
+    public ulong[] Ranks
+    {
+        get => _ranks;
+        set
+        {
+            _ranks = value;
+            Save();
+        }
+    }
+   
 
     public static void Initalize()
     {

@@ -1,25 +1,16 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Sockets;
-using System.Reflection;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
-using Emzi0767.Utilities;
-using FloridaStateRoleplay.Discord.Extensions;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FloridaStateRoleplay.Discord.Commands;
 
 public class UtilityCommands : ApplicationCommandModule
 {
-    [SlashCommand( "bug", "Submit a new bug report." )]
-    public async Task BugCommand( InteractionContext ctx )
+    public static DiscordInteractionResponseBuilder GetBugReportModal()
     {
-        if ( ctx.Member.Roles.Contains( ctx.Guild.GetRole( 917912577768566839 ) ) ) return;
-        
         var title = new TextInputComponent(
             label: "Thread Title",
             customId: "br-title",
@@ -77,6 +68,15 @@ public class UtilityCommands : ApplicationCommandModule
             .AddComponents( screenshots )
             .AddComponents( context );
 
+        return response;
+    }
+    
+    [SlashCommand( "bug", "Submit a new bug report." )]
+    public async Task BugCommand( InteractionContext ctx )
+    {
+        if ( ctx.Member.Roles.Contains( ctx.Guild.GetRole( 917912577768566839 ) ) ) return;
+
+        var response = GetBugReportModal();
         await ctx.Interaction.CreateResponseAsync( InteractionResponseType.Modal, response );
 
         async Task OnSubmit( DiscordClient sender, ModalSubmitEventArgs e )
@@ -87,9 +87,15 @@ public class UtilityCommands : ApplicationCommandModule
 
             try
             {
-                var message = await channel.SendMessageAsync(
-                    $"__**Describe the bug**__\n{e.Values["br-desc"]}\n\n__**To Reproduce**__\n{e.Values["br-steps"]}\n\n__**Expected Behavior**__\n{e.Values["br-behavior"]}\n__**Screenshots**__\n{e.Values["br-screenshots"]}\n__**Additional Context**__\n{e.Values["br-context"]}\nSubmitted by: <@{ctx.Member.Id}>" );
+                var button =
+                    new DiscordButtonComponent( ButtonStyle.Primary, "create_bug_report", "Create Bug Report" );
+                
+                var builder = new DiscordMessageBuilder()
+                    .WithContent(
+                        $"__**Describe the bug**__\n{e.Values["br-desc"]}\n\n__**To Reproduce**__\n{e.Values["br-steps"]}\n\n__**Expected Behavior**__\n{e.Values["br-behavior"]}\n__**Screenshots**__\n{e.Values["br-screenshots"]}\n__**Additional Context**__\n{e.Values["br-context"]}\n\nSubmitted by: <@{ctx.Member.Id}>" )
+                    .AddComponents( button );
 
+                var message = await channel.SendMessageAsync( builder );
                 await message.CreateThreadAsync( e.Values["br-title"], AutoArchiveDuration.Week );
             }
             catch
@@ -103,12 +109,9 @@ public class UtilityCommands : ApplicationCommandModule
 
         ctx.Client.ModalSubmitted += OnSubmit;
     }
-    
-    [SlashCommand( "suggestion", "Submit a new suggestion" )]
-    public async Task SuggestionCommand( InteractionContext ctx )
+
+    public static DiscordInteractionResponseBuilder GetFeatureRequestModal()
     {
-        if ( ctx.Member.Roles.Contains( ctx.Guild.GetRole( 917912577768566839 ) ) ) return;
-        
         var title = new TextInputComponent(
             label: "Thread Title",
             customId: "fr-title",
@@ -116,7 +119,7 @@ public class UtilityCommands : ApplicationCommandModule
             required: true,
             style: TextInputStyle.Short
         );
-        
+
         var description = new TextInputComponent(
             label: "Quick Description",
             customId: "fr-desc",
@@ -124,7 +127,7 @@ public class UtilityCommands : ApplicationCommandModule
             required: true,
             style: TextInputStyle.Paragraph
         );
-        
+
         var context = new TextInputComponent(
             label: "Additional Context",
             customId: "fr-context",
@@ -149,6 +152,15 @@ public class UtilityCommands : ApplicationCommandModule
             .AddComponents( context )
             .AddComponents( links );
         
+        return response;
+    }
+    
+    [SlashCommand( "suggestion", "Submit a new suggestion" )]
+    public async Task SuggestionCommand( InteractionContext ctx )
+    {
+        if ( ctx.Member.Roles.Contains( ctx.Guild.GetRole( 917912577768566839 ) ) ) return;
+
+        var response = GetFeatureRequestModal();
         await ctx.Interaction.CreateResponseAsync( InteractionResponseType.Modal, response );
 
         async Task OnSubmit( DiscordClient sender, ModalSubmitEventArgs e )
@@ -159,9 +171,14 @@ public class UtilityCommands : ApplicationCommandModule
 
             try
             {
-                var message = await channel.SendMessageAsync(
-                    $"__**Quick Description**__\n{e.Values["fr-desc"]}\n\n__**Additional Context**__\n{e.Values["fr-context"]}\n\n__**Links**__\n{e.Values["fr-links"]}\nSubmitted by: <@{ctx.Member.Id}>" );
+                var button = new DiscordButtonComponent( ButtonStyle.Primary, "create_feature_request",
+                    "Create Feature Request" );
+                
+                var builder = new DiscordMessageBuilder()
+                    .WithContent( $"__**Quick Description**__\n{e.Values["fr-desc"]}\n\n__**Additional Context**__\n{e.Values["fr-context"]}\n\n__**Links**__\n{e.Values["fr-links"]}\n\nSubmitted by: <@{ctx.Member.Id}>" )
+                    .AddComponents( button );
 
+                var message = await channel.SendMessageAsync( builder );
                 await message.CreateThreadAsync( e.Values["fr-title"], AutoArchiveDuration.Week );
             }
             catch
@@ -175,4 +192,5 @@ public class UtilityCommands : ApplicationCommandModule
 
         ctx.Client.ModalSubmitted += OnSubmit;
     }
+    
 }
