@@ -70,30 +70,6 @@ public class Config
         }
     }
 
-    private ulong _lastBugReportMessage;
-
-    public ulong LastBugReportMessage
-    {
-        get => _lastBugReportMessage;
-        set
-        {
-            _lastBugReportMessage = value;
-            Save();
-        }
-    }
-
-    private ulong _lastFeatureReportMessage;
-
-    public ulong LastFeatureReportMessage
-    {
-        get => _lastFeatureReportMessage;
-        set
-        {
-            _lastFeatureReportMessage = value;
-            Save();
-        }
-    }
-
     private ulong[] _ranks =
     {
         0,
