@@ -51,22 +51,14 @@ public class UtilityCommands : ApplicationCommandModule
             style: TextInputStyle.Paragraph
         );
 
-        var context = new TextInputComponent(
-            label: "Additional Context",
-            customId: "fr-screenshots",
-            placeholder: "Add any other context about the problem here.",
-            required: false,
-            style: TextInputStyle.Paragraph
-        );
-
         var response = new DiscordInteractionResponseBuilder()
             .WithTitle( "Bug Report" )
             .WithCustomId( "bug-report" )
             .AddComponents( title )
+            .AddComponents( description )
             .AddComponents( steps )
             .AddComponents( behavior )
-            .AddComponents( screenshots )
-            .AddComponents( context );
+            .AddComponents( screenshots );
 
         return response;
     }
@@ -78,36 +70,6 @@ public class UtilityCommands : ApplicationCommandModule
 
         var response = GetBugReportModal();
         await ctx.Interaction.CreateResponseAsync( InteractionResponseType.Modal, response );
-
-        async Task OnSubmit( DiscordClient sender, ModalSubmitEventArgs e )
-        {
-            if ( e.Interaction.Data.CustomId != response.CustomId ) return;
-
-            var channel = ctx.Guild.GetChannel( 917912579660197955 );
-
-            try
-            {
-                var button =
-                    new DiscordButtonComponent( ButtonStyle.Primary, "create_bug_report", "Create Bug Report" );
-                
-                var builder = new DiscordMessageBuilder()
-                    .WithContent(
-                        $"__**Describe the bug**__\n{e.Values["br-desc"]}\n\n__**To Reproduce**__\n{e.Values["br-steps"]}\n\n__**Expected Behavior**__\n{e.Values["br-behavior"]}\n__**Screenshots**__\n{e.Values["br-screenshots"]}\n__**Additional Context**__\n{e.Values["br-context"]}\n\nSubmitted by: <@{ctx.Member.Id}>" )
-                    .AddComponents( button );
-
-                var message = await channel.SendMessageAsync( builder );
-                await message.CreateThreadAsync( e.Values["br-title"], AutoArchiveDuration.Week );
-            }
-            catch
-            {
-                // ignored
-            }
-
-
-            ctx.Client.ModalSubmitted -= OnSubmit;
-        }
-
-        ctx.Client.ModalSubmitted += OnSubmit;
     }
 
     public static DiscordInteractionResponseBuilder GetFeatureRequestModal()
@@ -162,35 +124,6 @@ public class UtilityCommands : ApplicationCommandModule
 
         var response = GetFeatureRequestModal();
         await ctx.Interaction.CreateResponseAsync( InteractionResponseType.Modal, response );
-
-        async Task OnSubmit( DiscordClient sender, ModalSubmitEventArgs e )
-        {
-            if ( e.Interaction.Data.CustomId != response.CustomId ) return;
-
-            var channel = ctx.Guild.GetChannel( 917912579660197956 );
-
-            try
-            {
-                var button = new DiscordButtonComponent( ButtonStyle.Primary, "create_feature_request",
-                    "Create Feature Request" );
-                
-                var builder = new DiscordMessageBuilder()
-                    .WithContent( $"__**Quick Description**__\n{e.Values["fr-desc"]}\n\n__**Additional Context**__\n{e.Values["fr-context"]}\n\n__**Links**__\n{e.Values["fr-links"]}\n\nSubmitted by: <@{ctx.Member.Id}>" )
-                    .AddComponents( button );
-
-                var message = await channel.SendMessageAsync( builder );
-                await message.CreateThreadAsync( e.Values["fr-title"], AutoArchiveDuration.Week );
-            }
-            catch
-            {
-                // ignored
-            }
-            
-            
-            ctx.Client.ModalSubmitted -= OnSubmit;
-        }
-
-        ctx.Client.ModalSubmitted += OnSubmit;
     }
     
 }

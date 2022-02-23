@@ -61,6 +61,7 @@ public class Program
         Discord.GuildMemberRemoved += OnMemberRemoved;
         Discord.MessageCreated += OnMessageCreated;
         Discord.ComponentInteractionCreated += OnComponentIntractionCreated;
+        Discord.ModalSubmitted +=  HandleSuggestionModalSubmit;
         
         commands.SlashCommandErrored += OnSlashCommandErrored;
         
@@ -68,9 +69,50 @@ public class Program
         await Task.Delay( -1 );
     }
 
+    private async Task HandleSuggestionModalSubmit( DiscordClient sender, ModalSubmitEventArgs e )
+    {
+        await HandleSuggestionModalSubmit( e );
+        await HandleBugReportModalSubmit( e );
+    }
+
     private async Task OnComponentIntractionCreated( DiscordClient sender, ComponentInteractionCreateEventArgs e )
     {
         await HandleSuggestionButton( e );
+        await HandleBugReportButton( e );
+    }
+
+    private async Task HandleSuggestionModalSubmit( ModalSubmitEventArgs e )
+    {
+        if ( e.Interaction.Data.CustomId != "feature-request" ) return;
+
+        var channel = e.Interaction.Guild.GetChannel( 917912579660197956 );
+
+        var button = new DiscordButtonComponent( ButtonStyle.Primary, "create_feature_request",
+            "Create Feature Request" );
+
+        var builder = new DiscordMessageBuilder()
+            .WithContent(
+                $"__**Quick Description**__\n{e.Values["fr-desc"]}\n\n__**Additional Context**__\n{e.Values["fr-context"]}\n\n__**Links**__\n{e.Values["fr-links"]}\n\nSubmitted by: <@{e.Interaction.User.Id}>" )
+            .AddComponents( button );
+
+        var message = await channel.SendMessageAsync( builder );
+        await message.CreateThreadAsync( e.Values["fr-title"], AutoArchiveDuration.Week );
+    }
+
+    private async Task HandleBugReportModalSubmit( ModalSubmitEventArgs e )
+    {
+        var button =
+            new DiscordButtonComponent( ButtonStyle.Primary, "create_bug_report", "Create Bug Report" );
+
+        var builder = new DiscordMessageBuilder()
+            .WithContent(
+                $"__**Describe the bug**__\n{e.Values["br-desc"]}\n\n__**To Reproduce**__\n{e.Values["br-steps"]}\n\n__**Expected Behavior**__\n{e.Values["br-behavior"]}\n\n__**Screenshots**__\n{e.Values["br-screenshots"]}\n\nSubmitted by: <@{e.Interaction.User.Id}>" )
+            .AddComponents( button );
+
+        var channel = e.Interaction.Guild.GetChannel( 917912579660197955 );
+        
+        var message = await channel.SendMessageAsync( builder );
+        await message.CreateThreadAsync( e.Values["br-title"], AutoArchiveDuration.Week );
     }
 
     private async Task HandleSuggestionButton( ComponentInteractionCreateEventArgs e )
