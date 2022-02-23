@@ -1,4 +1,4 @@
-﻿using DSharpPlus;
+using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Exceptions;
@@ -89,6 +89,9 @@ public class Program
 
     private async Task OnMessageCreated( DiscordClient sender, MessageCreateEventArgs e )
     {
+        if ( !await DeleteLinksAsync( e ) ) return;
+        if ( !await DeleteBlacklistedWordsAsync( e ) ) return;
+        
         await HandleLevels( e );
         await HandleSticky( e );
     }
@@ -107,6 +110,68 @@ public class Program
 
         var response = await e.Channel.SendMessageAsync( $"__**{sticky.Title}**__\n{sticky.Message}" );
         sticky.LastMessage = response?.Id ?? 0;
+    }
+    
+    /// <returns>Was there a link deleted?</returns>
+    private async Task<bool> DeleteLinksAsync( MessageCreateEventArgs e )
+    {
+        // TODO comment this out until we have a list of whitelisted links
+        
+        /*
+        var text = e.Message.Content.ToLower();
+        
+        if ( text.Contains( "https://" ) || text.Contains( "http://" ) )
+        {
+            await e.Message.DeleteAsync();
+            return true;
+        }
+        
+        if ( text.Contains( "discord.gg" ) && !text.Contains( "discord.gg/floridasrp" ) )
+        {
+            await e.Message.DeleteAsync();
+            return true;
+        }
+        */
+        
+        return false;
+    }
+    
+    /// <returns>Was there a word deleted?</returns>
+    private async Task<bool> DeleteBlacklistedWordsAsync( MessageCreateEventArgs e )
+    {
+        var text = e.Message.Content.ToLower();
+        
+        // TODO can't type out list of blacklisted words because I am writing this on a school laptop.....
+        string[] words = { "fuck", "nigger", "faggot",
+            "shit",
+            "nigg",
+            "nigga",
+            "Nick Gur",
+            "NickGur",
+            "Niger",
+            "nig",
+            "nlgga",
+            "niglet",
+            "Niqqa",
+            "Niqqer",
+            "Niga",
+            "Nibber",
+            "Nibba",
+            "NGIGERS",
+            "niggers",
+            "wigger",
+            "wiggers",
+            "Niggerz" };
+        
+        foreach ( var word in words )
+        {
+            if ( !text.Contains( word.ToLower() ) ) continue;
+            
+            await e.Message.DeleteAsync();
+            return true;
+        }
+        
+        return false;
     }
 
     private async Task HandleLevels( MessageCreateEventArgs e )
