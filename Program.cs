@@ -170,7 +170,11 @@ public class Program
         if ( sticky.LastMessage != 0 )
         {
             var message = await e.Channel.GetMessageAsync( sticky.LastMessage );
-            await message.DeleteAsync();
+            try
+            {
+                await message.DeleteAsync();
+            }
+            catch { }
         }
 
         var response = await e.Channel.SendMessageAsync( $"__**{sticky.Title}**__\n{sticky.Message}" );
