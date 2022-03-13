@@ -154,8 +154,8 @@ public class Program
 
     private async Task OnMessageCreated( DiscordClient sender, MessageCreateEventArgs e )
     {
-        if ( !await DeleteLinksAsync( e ) ) return;
-        if ( !await DeleteBlacklistedWordsAsync( e ) ) return;
+        if ( await DeleteLinksAsync( e ) ) return;
+        if ( await DeleteBlacklistedWordsAsync( e ) ) return;
         
         await HandleLevels( e );
         await HandleSticky( e );
