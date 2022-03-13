@@ -35,8 +35,21 @@ public class Member
             return 0;
         }
     }
+
+    [JsonIgnore] private DiscordMember _discordMember;
     
-    [JsonIgnore] public DiscordMember? DiscordMember { get; init; }
+    [JsonIgnore]
+    public DiscordMember DiscordMember
+    {
+        get
+        {
+            if ( _discordMember is null )
+                _discordMember = Program.FloridaStateRoleplay.GetMemberAsync( Id ).GetAwaiter().GetResult();
+
+            return _discordMember;
+        }
+    }
+    
     [JsonIgnore] public string Mention => DiscordMember?.Mention ?? $"<@{Id}>";
     
     [JsonIgnore] public bool Muted => 
@@ -44,44 +57,18 @@ public class Member
 
     [JsonIgnore] public DateTime NextXpDrop = DateTime.MinValue;
     
-    public static async Task<Member?> FromId( ulong id )
+    public static async Task<Member> FromId( ulong id )
     {
         if ( _members.ContainsKey( id ) )
             return _members[id];
 
-        await Initialize();
-
-        if ( _members.ContainsKey( id ) )
-            return _members[id];
-
-        DiscordMember member;
-
-        try
+        var member = new Member
         {
-            member = await Program.FloridaStateRoleplay.GetMemberAsync( id );
-        }
-        catch
-        {
-            return null;
-        }
-        
-        Member retval;
-        
-        if ( member is null )
-        {
-            retval = new Member { Id = id };
-            _members[id] = retval;
-            return retval;
-        }
-
-        retval = new Member
-        {
-            Id = id,
-            DiscordMember = member
+            Id = id
         };
 
-        _members[id] = retval;
-        return retval;
+        _members[id] = member;
+        return member;
     }
 
     public async Task Unmute( Member staff, string reason )
@@ -96,7 +83,7 @@ public class Member
         lastMute.RevokerId = staff.Id;
         
         await DiscordMember.RevokeRoleAsync( Program.FloridaStateRoleplay.GetRole( Program.MutedRoleId ) );
-        await Save();
+        await SaveAsync();
     }
 
     public async Task Unban( Member staff, string reason )
@@ -109,7 +96,7 @@ public class Member
         lastBan.RevokerId = staff.Id;
         
         await Program.FloridaStateRoleplay.UnbanMemberAsync( Id );
-        await Save();
+        await SaveAsync();
     }
 
     public async Task Mute( Member staff, TimeAway length, string reason )
@@ -119,14 +106,14 @@ public class Member
             Reason = reason,
             Type = PunishmentType.Mute,
             InvokedAt = DateTime.Now,
-            ExpiresAt = DateTime.Now + length.ToTimeSpan(),
+            ExpiresAt = DateTime.Now + (TimeSpan) length,
             StaffId = staff.Id,
-            TargetId = Id,
+            TargetId = Id
         } );
 
         var discordMember = await Program.FloridaStateRoleplay.GetMemberAsync( Id );
         await discordMember.GrantRoleAsync( Program.FloridaStateRoleplay.GetRole( Program.MutedRoleId ) );
-        await Save();
+        await SaveAsync();
     }
     
     public async Task Kick( Member staff, string reason )
@@ -142,7 +129,7 @@ public class Member
 
         var discordMember = await Program.FloridaStateRoleplay.GetMemberAsync( Id );
         await discordMember.RemoveAsync( reason );
-        await Save();
+        await SaveAsync();
     }
 
     public async Task Ban( Member staff, TimeAway length, string reason )
@@ -158,7 +145,7 @@ public class Member
         } );
         
         await Program.FloridaStateRoleplay.BanMemberAsync( Id, reason: reason );
-        await Save();
+        await SaveAsync();
     }
 
     public async Task Warn( Member staff, string reason )
@@ -172,7 +159,7 @@ public class Member
             TargetId = Id
         });
 
-        await Save();
+        await SaveAsync();
     }
     
     public static IEnumerable<Member> All
@@ -195,12 +182,12 @@ public class Member
         _members = JsonConvert.DeserializeObject<Dictionary<ulong, Member>>( json ) ?? new Dictionary<ulong, Member>();
     }
 
-    public async Task Save()
+    public async Task SaveAsync()
     {
-        await SaveAll();
+        await SaveAllAsync();
     }
 
-    public static async Task SaveAll()
+    public static async Task SaveAllAsync()
     {
         const string path = "./data/members.json";
 
@@ -208,7 +195,7 @@ public class Member
         await File.WriteAllTextAsync( path, json );
     }
 
-    public static async Task<Member?> FromUser( DiscordUser? user )
+    public static async Task<Member> FromUser( DiscordUser? user )
     {
         if ( user is null ) return null;
         return await FromId( user.Id );

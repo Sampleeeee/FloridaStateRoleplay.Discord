@@ -64,6 +64,18 @@ public class Program
         Discord.MessageCreated += OnMessageCreated;
         Discord.ComponentInteractionCreated += OnComponentInteractionCreated;
         Discord.ModalSubmitted +=  HandleSuggestionModalSubmit;
+
+        Discord.GuildDownloadCompleted += async ( _, args ) =>
+        {
+            if ( !args.Guilds.ContainsKey( 917912577768566835 ) )
+                throw new Exception();
+
+            FloridaStateRoleplay = args.Guilds[917912577768566835];
+
+            // await Task.Delay( 20000 );
+            await TimerElapsed();
+        };
+        
         commands.SlashCommandErrored += OnSlashCommandErrored;
 
         await Discord.ConnectAsync();
@@ -81,9 +93,9 @@ public class Program
         foreach ( ( ulong channelId, ulong threadId ) in Config.Current.MediaOnlyChannels )
         {
             var channel = FloridaStateRoleplay.GetChannel( channelId );
-            var thread = channel.Threads.First( x => x.Id == threadId );
+            var thread = ( await channel.ListPublicArchivedThreadsAsync() ).Threads.FirstOrDefault( x => x.Id == threadId );
 
-            if ( thread.ThreadMetadata.IsArchived )
+            if ( thread?.ThreadMetadata.IsArchived ?? false )
                 await thread.SendMessageAsync( "This thread is no longer archived." );
         }
     }
@@ -160,7 +172,10 @@ public class Program
         };
 
         if ( e.Exception is not BadRequestException badRequest )
+        {
             embed.AddField( $"`{e.Exception.GetType()}.Message`", $"```{e.Exception.Message}```" );
+            embed.AddField( $"`{e.Exception.GetType()}.StackTrace", $"```{e.Exception.StackTrace}```" );
+        }
         else
         {
             embed.AddField( "`BadRequestException.JsonMessage`", $"```{badRequest.JsonMessage}```" );
@@ -305,7 +320,7 @@ public class Program
         modifier += 1f;
 
         await member.AddExperienceAsync( e.Guild, e.Author, true, modifier );
-        await member.Save();
+        await member.SaveAsync();
     }
 
     private async Task OnMemberRemoved( DiscordClient sender, GuildMemberRemoveEventArgs e )
@@ -396,6 +411,6 @@ public class Program
         
         #endregion
 
-        await Member.SaveAll();
+        await Member.SaveAllAsync();
     }
 }

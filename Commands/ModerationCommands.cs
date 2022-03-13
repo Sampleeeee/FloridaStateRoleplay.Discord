@@ -154,10 +154,10 @@ public class ModerationCommands : ApplicationCommandModule
     [SlashCommand( "ban", "Ban a member of the server" )]
     public async Task BanCommandAsync( InteractionContext ctx,
         [Option( "target", "The user to ban" )] DiscordUser user,
-        [Option("length", "The length of the ban")] string length,
+        [Option("length", "The length of the ban. Ex: perm or #[y/mo/d/h/m/s], 5d4h6m = 5 days, 4 hours, 6 minutes")] string len,
         [Option( "reason", "The reason for banning this user." )] string reason )
     {
-        var timeAway = new TimeAway( length );
+        var length = new TimeAway( len );
 
         if ( !ctx.Member.IsStaff() )
         {
@@ -171,7 +171,7 @@ public class ModerationCommands : ApplicationCommandModule
             };
 
             builder.AddField( "Reason", reason );
-            builder.AddField( "Length", $"{timeAway.FormattedTime()}" );
+            builder.AddField( "Length", $"{length}" );
 
             await Program.StaffModLogAsync( builder );
             return;
@@ -196,7 +196,7 @@ public class ModerationCommands : ApplicationCommandModule
             };
 
             builder.AddField( "Reason", reason, true );
-            builder.AddField( "Length", $"{timeAway.FormattedTime()}", true );
+            builder.AddField( "Length", $"{length}", true );
             
             await Program.StaffModLogAsync( builder );
             
@@ -205,8 +205,6 @@ public class ModerationCommands : ApplicationCommandModule
 
         var member = await Member.FromUser( target );
         var staff = await Member.FromUser( ctx.Member );
-
-        if ( member is null || staff is null ) return;
 
         {
             var builder = new DiscordEmbedBuilder
@@ -217,70 +215,69 @@ public class ModerationCommands : ApplicationCommandModule
             };
 
             builder.AddField( "Reason", reason );
-            builder.AddField( "Length", $"{timeAway.FormattedTime()}" );
+            builder.AddField( "Length", $"{length}" );
 
             await Program.StaffModLogAsync( builder );
         }
 
-        await ctx.RespondAsync( $"{member.Mention} was banned by {staff.Mention} for {timeAway.FormattedTime()}, for reason: {reason}" );
-        await member.Ban( staff, timeAway, reason );
-        
+        await ctx.RespondAsync( $"{member.Mention} was banned by {staff.Mention} for {length}, for reason: {reason}" );
+        await member.Ban( staff, length, reason );
     }
 
     [SlashCommand( "mute", "Mute a member of the server" )]
     public async Task MuteCommandAsync( InteractionContext ctx,
         [Option( "target", "The user to mute" )]
         DiscordUser user,
-        [Option( "length", "The length of the mute" )]
-        string length,
+        [Option( "length", "The length of the mute. Ex: perm or #[y/mo/d/h/m/s], 5d4h6m = 5 days, 4 hours, 6 minutes" )]
+        string len,
         [Option( "reason", "The reason for muting this user" )]
         string reason )
     {
-        var timeAway = new TimeAway( length );
-
+        var length = new TimeAway( len );
+        
         if ( !ctx.Member.IsStaff() )
         {
             await ctx.RespondAsEphemeralAsync( "You do not have permission to use this command." );
-
+        
             var builder = new DiscordEmbedBuilder
             {
                 Title = "Insufficient Permissions",
                 Description =
                     $"{ctx.Member.Mention} tried to run command '/mute' on <@{user.Id}> but does not have the proper permissions."
             };
-
+        
             builder.AddField( "Reason", reason, true );
-            builder.AddField( "Length", $"{timeAway.FormattedTime()}" );
+            builder.AddField( "Length", $"{length}" );
             
             await Program.StaffModLogAsync( builder );
             return;
         }
-
+        
         var target = await ctx.Guild.GetMemberAsync( user.Id );
         if ( target is null )
         {
             await ctx.RespondAsEphemeralAsync( "We could not find that user." );
             return;
         }
-
+        
         if ( !ctx.Member.CanMute( target ) )
         {
             await ctx.RespondAsEphemeralAsync( "You do not have permission to mute this user." );
-
+        
             var builder = new DiscordEmbedBuilder
             {
                 Title = "Insufficient Permissions",
                 Description =
                     $"{ctx.Member.Mention} tried to run command '/mute' on <@{user.Id}> but does not have the proper permissions."
             };
-
+        
             builder.AddField( "Reason", reason, true );
-            builder.AddField( "Length", $"{timeAway.FormattedTime()}" );
+            builder.AddField( "Length", $"{length}" );
             
             await Program.StaffModLogAsync( builder );
             return;
         }
-
+        
         {
             var builder = new DiscordEmbedBuilder
             {
@@ -288,20 +285,19 @@ public class ModerationCommands : ApplicationCommandModule
                 Description =
                     $"{ctx.Member.Mention} ran command '/mute' on <@{user.Id}>."
             };
-
+        
             builder.AddField( "Reason", reason );
-            builder.AddField( "Length", $"{timeAway.FormattedTime()}" );
-
+            builder.AddField( "Length", $"{length}" );
+        
             await Program.StaffModLogAsync( builder );
         }
-
+        
         var member = await Member.FromUser( target );
         var staff = await Member.FromUser( ctx.Member );
 
-        if ( member is null || staff is null ) return;
-
-        await ctx.RespondAsync( $"{member.Mention} was muted by {staff.Mention} for {timeAway.FormattedTime()}, for reason: {reason}" );
-        await member.Mute( staff, timeAway, reason );
+        await member.DiscordMember.TimeoutAsync( (DateTimeOffset) length, reason );
+        await ctx.RespondAsync( $"{member.Mention} was muted by {staff.Mention} for {length}, for reason: {reason}" );
+        await member.Mute( staff, length, reason );
     }
 
     [SlashCommand( "punishments", "List all of a user's warns" )]
@@ -523,7 +519,7 @@ public class ModerationCommands : ApplicationCommandModule
                 await ctx.Guild.GetChannel( Config.Current.LevelUpChannelId )
                     .SendMessageAsync( $"{member.Mention} has leveled up to level {member.Level}!" );
 
-        await member.Save();
+        await member.SaveAsync();
         await ctx.RespondAsEphemeralAsync( $"Successfully added {amount} messages to {member.Mention}" );
     }
 

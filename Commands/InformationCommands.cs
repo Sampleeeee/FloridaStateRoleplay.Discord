@@ -103,7 +103,7 @@ public class InformationCommands : ApplicationCommandModule
         if ( input is "" or "remove" )
         {
             member.Birthday = null;
-            await member.Save();
+            await member.SaveAsync();
 
             return;
         }
@@ -115,7 +115,7 @@ public class InformationCommands : ApplicationCommandModule
         else
         {
             member.Birthday = new Birthday { Date = date.Date };
-            await member.Save();
+            await member.SaveAsync();
             
             await ctx.RespondAsEphemeralAsync( $"We have updated your birthday to be {date.Date:d}" );
         }
