@@ -34,6 +34,22 @@ public class Config
         }
     }
 
+    private ( ulong, ulong )[] _mediaOnlyChannels =
+    {
+        ( 917912579312087142, 952446561210761237 ),
+        ( 928449051945492530, 952450719519215636 )
+    };
+        
+    public ( ulong ChannelId, ulong ThreadId )[] MediaOnlyChannels
+    {
+        get => _mediaOnlyChannels;
+        set
+        {
+            _mediaOnlyChannels = value;
+            Save();
+        }
+    }
+
     private ulong _levelUpChannelId = 917912579312087146;
 
     public ulong LevelUpChannelId

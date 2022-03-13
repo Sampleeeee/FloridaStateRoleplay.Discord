@@ -222,4 +222,10 @@ public class InformationCommands : ApplicationCommandModule
 
         await ctx.RespondAsync( response );
     }
+
+    [SlashCommand( "listthreads", "a" )]
+    private async Task ListThreadsCommandAsync( InteractionContext ctx )
+    {
+        await ctx.RespondAsEphemeralAsync( $"{ctx.Channel.Threads.Count}" );
+    }
 }

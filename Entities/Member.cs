@@ -214,12 +214,12 @@ public class Member
         return await FromId( user.Id );
     }
 
-    public async Task AddExperienceAsync( DiscordGuild guild, DiscordUser user, bool sendMessage = true )
+    public async Task AddExperienceAsync( DiscordGuild guild, DiscordUser user, bool sendMessage = true, float modifier = 1f )
     {
         uint beforeLevel = Level;
         ulong beforeXp = Experience;
 
-        Experience += Convert.ToUInt64( new Random().Next( 0, 31 ) );
+        Experience += Convert.ToUInt64( new Random().Next( 0, 31 ) * modifier );
         Console.WriteLine( $"Updating {DiscordMember?.DisplayName ?? user.Username }'s xp. {beforeXp} => {Experience}" );
 
         if ( beforeLevel != 0 && sendMessage )

@@ -33,6 +33,8 @@ public class Program
 
     public async Task MainAsync()
     {
+        Config.Initalize();
+        
         Discord = new DiscordClient( new DiscordConfiguration
         {
             Token = Config.Current.Token,
@@ -54,19 +56,36 @@ public class Program
 
         var interactivity = Discord.UseInteractivity();
 
-        timer.Elapsed += ( _, _ ) => UpdateMembers().GetAwaiter().GetResult();
+        timer.Elapsed += ( _, _ ) => TimerElapsed().GetAwaiter().GetResult();
         timer.Start();
         
         Discord.GuildMemberAdded += OnMemberAdded;
         Discord.GuildMemberRemoved += OnMemberRemoved;
         Discord.MessageCreated += OnMessageCreated;
-        Discord.ComponentInteractionCreated += OnComponentIntractionCreated;
+        Discord.ComponentInteractionCreated += OnComponentInteractionCreated;
         Discord.ModalSubmitted +=  HandleSuggestionModalSubmit;
-        
         commands.SlashCommandErrored += OnSlashCommandErrored;
-        
+
         await Discord.ConnectAsync();
         await Task.Delay( -1 );
+    }
+
+    private async Task TimerElapsed()
+    {
+        await UpdateMembers();
+        await HandleThreads();
+    }
+
+    private async Task HandleThreads()
+    {
+        foreach ( ( ulong channelId, ulong threadId ) in Config.Current.MediaOnlyChannels )
+        {
+            var channel = FloridaStateRoleplay.GetChannel( channelId );
+            var thread = channel.Threads.First( x => x.Id == threadId );
+
+            if ( thread.ThreadMetadata.IsArchived )
+                await thread.SendMessageAsync( "This thread is no longer archived." );
+        }
     }
 
     private async Task HandleSuggestionModalSubmit( DiscordClient sender, ModalSubmitEventArgs e )
@@ -75,7 +94,7 @@ public class Program
         await HandleBugReportModalSubmit( e );
     }
 
-    private async Task OnComponentIntractionCreated( DiscordClient sender, ComponentInteractionCreateEventArgs e )
+    private async Task OnComponentInteractionCreated( DiscordClient sender, ComponentInteractionCreateEventArgs e )
     {
         await HandleSuggestionButton( e );
         await HandleBugReportButton( e );
@@ -156,9 +175,38 @@ public class Program
     {
         if ( await DeleteLinksAsync( e ) ) return;
         if ( await DeleteBlacklistedWordsAsync( e ) ) return;
+        if ( await DeleteMediaOnlyMessages( e ) ) return;
         
         await HandleLevels( e );
         await HandleSticky( e );
+    }
+
+    private async Task<bool> DeleteMediaOnlyMessages( MessageCreateEventArgs e )
+    {
+        if ( e.Author.IsBot ) 
+            return false;
+        
+        if ( !new ulong[] { 917912579312087142, 928449051945492530 }.Contains( e.Channel.Id ) ) 
+            return false;
+
+        if ( e.Message.Content.ToLower().Contains( "http://" ) || e.Message.Content.Contains( "https://" ) )
+            return false;
+
+        if ( e.Message.Attachments.Count > 0 )
+            return false;
+
+        var member = await e.Guild.GetMemberAsync( e.Author.Id );
+
+        if ( member.IsManagemenet() )
+            return false;
+        
+        await e.Message.DeleteAsync();
+        await member.CreateDmChannelAsync();
+        
+        await member.SendMessageAsync(
+            $"Your message in #{e.Channel.Name} was deleted. You may only upload media to this channel." );
+            
+        return true;
     }
 
     private async Task HandleSticky( MessageCreateEventArgs e )
@@ -253,7 +301,10 @@ public class Program
         if ( member is null ) return;
         if ( member.NextXpDrop >= DateTime.Now ) return;
 
-        await member.AddExperienceAsync( e.Guild, e.Author );
+        float modifier = Math.Max( e.Message.Attachments.Count, 5f ) / 10;
+        modifier += 1f;
+
+        await member.AddExperienceAsync( e.Guild, e.Author, true, modifier );
         await member.Save();
     }
 
