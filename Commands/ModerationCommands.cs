@@ -295,7 +295,7 @@ public class ModerationCommands : ApplicationCommandModule
         var member = await Member.FromUser( target );
         var staff = await Member.FromUser( ctx.Member );
 
-        await member.DiscordMember.TimeoutAsync( (DateTimeOffset) length, reason );
+        // await member.DiscordMember.TimeoutAsync( (DateTimeOffset) length, reason );
         await ctx.RespondAsync( $"{member.Mention} was muted by {staff.Mention} for {length}, for reason: {reason}" );
         await member.Mute( staff, length, reason );
     }
