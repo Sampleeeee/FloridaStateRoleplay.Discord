@@ -274,7 +274,7 @@ public class Program
         var text = e.Message.Content.ToLower();
         
         // TODO can't type out list of blacklisted words because I am writing this on a school laptop.....
-        string[] words = { "fuck", "nigger", "faggot",
+        string[] words = { "nigger", "faggot",
             "shit",
             "nigg",
             "nigga",
