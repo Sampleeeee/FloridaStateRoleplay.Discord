@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
