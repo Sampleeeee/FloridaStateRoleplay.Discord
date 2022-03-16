@@ -13,6 +13,7 @@ public class Punishment
     
     public DateTime InvokedAt { get; set; }
     public DateTime ExpiresAt { get; set; }
+    public TimeAway TimeAway { get; set; }
 
     /// <summary>
     /// Has the expiration been processed yet?

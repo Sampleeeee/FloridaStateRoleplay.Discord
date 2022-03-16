@@ -36,17 +36,17 @@ public class Member
         }
     }
 
-    [JsonIgnore] private DiscordMember _discordMember;
+    [JsonIgnore] private DiscordMember? _discordMember = null;
     
     [JsonIgnore]
-    public DiscordMember DiscordMember
+    public DiscordMember? DiscordMember
     {
         get
         {
             if ( _discordMember is null )
                 _discordMember = Program.FloridaStateRoleplay.GetMemberAsync( Id ).GetAwaiter().GetResult();
 
-            return _discordMember;
+            return _discordMember ?? null;
         }
     }
     

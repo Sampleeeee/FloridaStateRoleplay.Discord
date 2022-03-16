@@ -1,4 +1,3 @@
-using System.Reflection.Metadata;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -9,7 +8,8 @@ using DSharpPlus.SlashCommands.EventArgs;
 using FloridaStateRoleplay.Discord.Commands;
 using FloridaStateRoleplay.Discord.Entities;
 using FloridaStateRoleplay.Discord.Extensions;
-using Newtonsoft.Json;
+using FuzzySharp;
+using Timer = System.Timers.Timer;
 
 namespace FloridaStateRoleplay.Discord;
 
@@ -48,7 +48,7 @@ public class Program
         var commands = Discord.UseSlashCommands();
         commands.RegisterCommands<UtilityCommands, InformationCommands, ModerationCommands>( 917912577768566835 );
 
-        var timer = new System.Timers.Timer
+        var timer = new Timer
         {
             Interval = 2 * 60 * 1000,
             AutoReset = true
@@ -190,13 +190,13 @@ public class Program
     {
         if ( await DeleteLinksAsync( e ) ) return;
         if ( await DeleteBlacklistedWordsAsync( e ) ) return;
-        if ( await DeleteMediaOnlyMessages( e ) ) return;
+        if ( await DeleteMediaOnlyMessagesAsync( e ) ) return;
         
         await HandleLevels( e );
         await HandleSticky( e );
     }
 
-    private async Task<bool> DeleteMediaOnlyMessages( MessageCreateEventArgs e )
+    private async Task<bool> DeleteMediaOnlyMessagesAsync( MessageCreateEventArgs e )
     {
         if ( e.Author.IsBot ) 
             return false;
@@ -271,39 +271,13 @@ public class Program
     /// <returns>Was there a word deleted?</returns>
     private async Task<bool> DeleteBlacklistedWordsAsync( MessageCreateEventArgs e )
     {
-        var text = e.Message.Content.ToLower();
+        if ( !e.Message.Content.Split( " " )
+                .SelectMany( _ => Config.Current.BlacklistedWords, ( str, badWord ) => new { str, badWord } )
+                .Where( t => Fuzz.Ratio( t.str, t.badWord ) >= 90 )
+                .Select( t => t.str ).Any() ) return false;
         
-        // TODO can't type out list of blacklisted words because I am writing this on a school laptop.....
-        string[] words = { "fuck", "nigger", "faggot",
-            "shit",
-            "nigg",
-            "nigga",
-            "Nick Gur",
-            "NickGur",
-            "Niger",
-            "nig",
-            "nlgga",
-            "niglet",
-            "Niqqa",
-            "Niqqer",
-            "Niga",
-            "Nibber",
-            "Nibba",
-            "NGIGERS",
-            "niggers",
-            "wigger",
-            "wiggers",
-            "Niggerz" };
-        
-        foreach ( var word in words )
-        {
-            if ( !text.Contains( word.ToLower() ) ) continue;
-            
-            await e.Message.DeleteAsync();
-            return true;
-        }
-        
-        return false;
+        await e.Message.DeleteAsync();
+        return true;
     }
 
     private async Task HandleLevels( MessageCreateEventArgs e )

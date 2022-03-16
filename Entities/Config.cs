@@ -34,6 +34,41 @@ public class Config
         }
     }
 
+    private string[] _blacklistedWords =
+    {
+        "nigger",
+        "faggot"
+    };
+
+    public string[] BlacklistedWords
+    {
+        get => _blacklistedWords;
+        set
+        {
+            _blacklistedWords = value;
+            Save();
+        }
+    }
+    
+    /// <summary>
+    /// Threads to stop from archiving
+    /// </summary>
+    private ( ulong, ulong )[] _keepAlive =
+    {
+        ( 917912579312087142, 952446561210761237 ),
+        ( 928449051945492530, 952450719519215636 )
+    };
+
+    public ( ulong ChannelId, ulong ThreadId )[] KeepAliveThreads
+    {
+        get => _keepAlive;
+        set
+        {
+            _keepAlive = value;
+            Save();
+        }
+    }
+
     private ( ulong, ulong )[] _mediaOnlyChannels =
     {
         ( 917912579312087142, 952446561210761237 ),
