@@ -34,6 +34,17 @@ public class Config
         }
     }
 
+    private float _blacklistedWordMaxRatio = 90;
+    public float BlacklistedWordMaxRatio
+    {
+        get => _blacklistedWordMaxRatio;
+        set
+        {
+            _blacklistedWordMaxRatio = value;
+            Save();
+        }
+    }
+
     private string[] _blacklistedWords =
     {
         "nigger",

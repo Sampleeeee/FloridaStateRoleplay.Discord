@@ -274,7 +274,7 @@ public class Program
     {
         if ( !e.Message.Content.Split( " " )
                 .SelectMany( _ => Config.Current.BlacklistedWords, ( str, badWord ) => new { str, badWord } )
-                .Where( t => Fuzz.Ratio( t.str, t.badWord ) >= 90 )
+                .Where( t => Fuzz.Ratio( t.str, t.badWord ) >= Config.Current.BlacklistedWordMaxRatio )
                 .Select( t => t.str ).Any() ) return false;
         
         await e.Message.DeleteAsync();
