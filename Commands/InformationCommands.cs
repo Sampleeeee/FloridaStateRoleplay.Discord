@@ -14,11 +14,8 @@ public class InformationCommands : ApplicationCommandModule
     public async Task CadCommandAsync( InteractionContext ctx )
     {
         const string str = "All information about our cad can be found here: https://docs.floridasrp.com/tutorials/cad";
+        await ctx.RespondAsync( str );
 
-        // if ( ctx.Member.IsGuest() )
-            // await ctx.RespondAsEphemeralAsync( str );
-        // else
-            await ctx.RespondAsync( str );
     }
 
     [SlashCommand( "roster", "Link to our community roster." )]
@@ -58,22 +55,14 @@ public class InformationCommands : ApplicationCommandModule
     public async Task IpCommandAsync( InteractionContext ctx )
     {
         const string str = "You can join our server by clicking here: https://cfx.re/join/bvkvzp";
-
-        // if ( ctx.Member.IsGuest() )
-            // await ctx.RespondAsEphemeralAsync( str );
-        // else
-            await ctx.RespondAsync( str );
+        await ctx.RespondAsync( str );
     }
 
     [SlashCommand( "banappeal", "Get a link to create a ban appeal." )]
     public async Task BanAppealCommmandAsync( InteractionContext ctx )
     {
         const string str = "You can create a ban appeal by reacting to this message: https://canary.discord.com/channels/917912577768566835/917912578708090882/924427892434296862";
-
-        // if ( ctx.Member.IsGuest() )
-            // await ctx.RespondAsEphemeralAsync( str );
-        // else
-            await ctx.RespondAsync( str );
+        await ctx.RespondAsync( str );
     }
 
     [SlashCommand( "pingjay", "ping jay and maybe if you're lucky say something other than hi" )]
@@ -98,7 +87,7 @@ public class InformationCommands : ApplicationCommandModule
     public async Task BirthdayCommandAsync( InteractionContext ctx, [Option("birthday", "Your birthdate, or 'remove' to remove your birthday from our database.")] string input = "remove" )
     {
         var member = await Member.FromId( ctx.Member.Id );
-        if ( member?.DiscordMember is null ) return;
+        if ( member.DiscordMember is null ) return;
 
         if ( input is "" or "remove" )
         {

@@ -47,8 +47,7 @@ public class Config
 
     private string[] _blacklistedWords =
     {
-        "nigger",
-        "faggot"
+        "nigger"
     };
 
     public string[] BlacklistedWords

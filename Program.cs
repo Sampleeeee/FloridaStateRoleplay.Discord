@@ -167,15 +167,15 @@ public class Program
     {
         var embed = new DiscordEmbedBuilder
         {
-            Title = "Command Errored",
-            Description = $"The command {e.Context.CommandName} has encountered an `{e.Exception.GetType()}` exception.",
+            Title = $"Command `/{e.Context.CommandName}` Errored",
+            Description = $"{e.Context.Member.Mention} has ran `/{e.Context.CommandName}` and encountered an exception of type `{e.Exception.GetType()}`.",
             Color = DiscordColor.DarkRed
         };
 
         if ( e.Exception is not BadRequestException badRequest )
         {
             embed.AddField( $"`{e.Exception.GetType()}.Message`", $"```{e.Exception.Message}```" );
-            embed.AddField( $"`{e.Exception.GetType()}.StackTrace", $"```{e.Exception.StackTrace}```" );
+            embed.AddField( $"`{e.Exception.GetType()}.StackTrace`", $"```{e.Exception.StackTrace}```" );
         }
         else
         {
@@ -201,14 +201,25 @@ public class Program
     {
         if ( e.Author.IsBot ) 
             return false;
-        
-        if ( !new ulong[] { 917912579312087142, 928449051945492530 }.Contains( e.Channel.Id ) ) 
-            return false;
 
         if ( e.Message.Content.ToLower().Contains( "http://" ) || e.Message.Content.Contains( "https://" ) )
             return false;
 
         if ( e.Message.Attachments.Count > 0 )
+            return false;
+
+        var inMediaOnlyChannel = false;
+
+        foreach ( var x in Config.Current.MediaOnlyChannels )
+        {
+            if ( x.ChannelId != e.Channel.Id )
+                continue;
+            
+            inMediaOnlyChannel = true;
+            break;
+        }
+
+        if ( !inMediaOnlyChannel )
             return false;
 
         var member = await e.Guild.GetMemberAsync( e.Author.Id );
