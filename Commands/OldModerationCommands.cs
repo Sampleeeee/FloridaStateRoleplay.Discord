@@ -32,7 +32,7 @@ public class OldModerationCommands : ApplicationCommandModule
             return;
         }
         
-        var target = await ctx.Guild.GetMemberAsync( user.Id );
+        var target = await ctx.Guild.GetMemberOrNullAsync( user.Id );
         if ( target is null )
         {
             await ctx.RespondAsEphemeralAsync( "We could not find that user." );
@@ -104,7 +104,7 @@ public class OldModerationCommands : ApplicationCommandModule
             return;
         }
 
-        var target = await ctx.Guild.GetMemberAsync( user.Id );
+        var target = await ctx.Guild.GetMemberOrNullAsync( user.Id );
         if ( target is null )
         {
             await ctx.RespondAsEphemeralAsync( "We could not find that user." );
@@ -177,7 +177,7 @@ public class OldModerationCommands : ApplicationCommandModule
             return;
         }
         
-        var target = await ctx.Guild.GetMemberAsync( user.Id );
+        var target = await ctx.Guild.GetMemberOrNullAsync( user.Id );
         if ( target is null )
         {
             await ctx.RespondAsEphemeralAsync( "We could not find that user." );
@@ -253,7 +253,7 @@ public class OldModerationCommands : ApplicationCommandModule
             return;
         }
         
-        var target = await ctx.Guild.GetMemberAsync( user.Id );
+        var target = await ctx.Guild.GetMemberOrNullAsync( user.Id );
         if ( target is null )
         {
             await ctx.RespondAsEphemeralAsync( "We could not find that user." );
@@ -327,7 +327,7 @@ public class OldModerationCommands : ApplicationCommandModule
         {
             string staffName = $"{punishment.StaffId}";
 
-            var staffMember = await ctx.Guild.GetMemberAsync( punishment.StaffId );
+            var staffMember = await ctx.Guild.GetMemberOrNullAsync( punishment.StaffId );
             if ( staffMember is not null )
                 staffName = staffMember.DisplayName;
 
@@ -376,7 +376,7 @@ public class OldModerationCommands : ApplicationCommandModule
             return;
         }
 
-        var target = await ctx.Guild.GetMemberAsync( user.Id );
+        var target = await ctx.Guild.GetMemberOrNullAsync( user.Id );
         if ( target is null )
         {
             await ctx.RespondAsEphemeralAsync( "We could not find that user." );
@@ -446,7 +446,7 @@ public class OldModerationCommands : ApplicationCommandModule
             return;
         }
 
-        var target = await ctx.Guild.GetMemberAsync( user.Id );
+        var target = await ctx.Guild.GetMemberOrNullAsync( user.Id );
         if ( target is null )
         {
             await ctx.RespondAsEphemeralAsync( "We could not find that user." );
