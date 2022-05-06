@@ -76,7 +76,7 @@ public class Program
             // await Task.Delay( 20000 );
             await TimerElapsed();
         };
-        
+
         commands.SlashCommandErrored += OnSlashCommandErrored;
 
         await Discord.ConnectAsync();
@@ -174,8 +174,8 @@ public class Program
         var modal = UtilityCommands.GetBugReportModal();
         await e.Interaction.CreateResponseAsync( InteractionResponseType.Modal, modal );
     }
-    
-    private Task OnSlashCommandErrored( SlashCommandsExtension sender, SlashCommandErrorEventArgs e )
+
+    private async Task OnSlashCommandErrored( SlashCommandsExtension sender, SlashCommandErrorEventArgs e )
     {
         var embed = new DiscordEmbedBuilder
         {
@@ -194,9 +194,9 @@ public class Program
             embed.AddField( "`BadRequestException.JsonMessage`", $"```{badRequest.JsonMessage}```" );
             embed.AddField( "`BadRequestException.Errors`", $"```{badRequest.Errors}```" );
         }
-        
-        e.Context.Channel.SendMessageAsync( embed );
-        return Task.CompletedTask;
+
+        await e.Context.RespondAsEphemeralAsync( "There was an error running this command. Please try again and contact server developers if the issue persists." );
+        await FloridaStateRoleplay.GetChannel( Config.Current.ErrorLogChannel ).SendMessageAsync( embed );
     }
 
     private async Task OnMessageCreated( DiscordClient sender, MessageCreateEventArgs e )

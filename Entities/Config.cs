@@ -34,6 +34,18 @@ public class Config
         }
     }
 
+    private ulong _errorLogChannel = 972147782376910848;
+
+    public ulong ErrorLogChannel
+    {
+        get => _errorLogChannel;
+        set
+        {
+            _errorLogChannel = value;
+            Save();
+        }
+    }
+
     private float _blacklistedWordMaxRatio = 90;
     public float BlacklistedWordMaxRatio
     {

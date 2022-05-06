@@ -15,7 +15,6 @@ public class InformationCommands : ApplicationCommandModule
     {
         const string str = "All information about our cad can be found here: https://docs.floridasrp.com/tutorials/cad";
         await ctx.RespondAsync( str );
-
     }
 
     [SlashCommand( "roster", "Link to our community roster." )]

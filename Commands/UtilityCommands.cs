@@ -18,7 +18,7 @@ public class UtilityCommands : ApplicationCommandModule
             required: true,
             style: TextInputStyle.Short
         );
-        
+
         var description = new TextInputComponent(
             label: "Describe the bug",
             customId: "br-desc",
@@ -26,7 +26,7 @@ public class UtilityCommands : ApplicationCommandModule
             required: true,
             style: TextInputStyle.Paragraph
         );
-        
+
         var steps = new TextInputComponent(
             label: "Steps to reproduce",
             customId: "br-steps",
