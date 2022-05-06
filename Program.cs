@@ -128,7 +128,12 @@ public class Program
             .AddComponents( button );
 
         var message = await channel.SendMessageAsync( builder );
-        await message.CreateThreadAsync( e.Values["fr-title"], AutoArchiveDuration.Week );
+        var thread = await message.CreateThreadAsync( e.Values["fr-title"], AutoArchiveDuration.Week );
+        
+        var ping = await thread.SendMessageAsync( $"<@{e.Interaction.User.Id}>" );
+        await ping.DeleteAsync();
+
+        await e.Interaction.RespondAsEmphoricalAsync( "Bug report submitted." ); 
     }
 
     private async Task HandleBugReportModalSubmit( ModalSubmitEventArgs e )
@@ -144,7 +149,12 @@ public class Program
         var channel = e.Interaction.Guild.GetChannel( 917912579660197955 );
         
         var message = await channel.SendMessageAsync( builder );
-        await message.CreateThreadAsync( e.Values["br-title"], AutoArchiveDuration.Week );
+        var thread = await message.CreateThreadAsync( e.Values["br-title"], AutoArchiveDuration.Week );
+        
+        var ping = await thread.SendMessageAsync( $"<@{e.Interaction.User.Id}>" );
+        await ping.DeleteAsync();
+        
+        await e.Interaction.RespondAsEmphoricalAsync( "Bug report submitted." ); 
     }
 
     private async Task HandleSuggestionButton( ComponentInteractionCreateEventArgs e )
