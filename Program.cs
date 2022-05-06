@@ -133,7 +133,8 @@ public class Program
         var ping = await thread.SendMessageAsync( $"<@{e.Interaction.User.Id}>" );
         await ping.DeleteAsync();
 
-        await e.Interaction.RespondAsEmphoricalAsync( "Bug report submitted." ); 
+        await e.Interaction.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
+            new DiscordInteractionResponseBuilder().AsEphemeral().WithContent( "Suggestion Submitted" ) );
     }
 
     private async Task HandleBugReportModalSubmit( ModalSubmitEventArgs e )
@@ -154,7 +155,8 @@ public class Program
         var ping = await thread.SendMessageAsync( $"<@{e.Interaction.User.Id}>" );
         await ping.DeleteAsync();
         
-        await e.Interaction.RespondAsEmphoricalAsync( "Bug report submitted." ); 
+        await e.Interaction.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
+            new DiscordInteractionResponseBuilder().AsEphemeral().WithContent( "Bug Report Submitted" ) );
     }
 
     private async Task HandleSuggestionButton( ComponentInteractionCreateEventArgs e )
