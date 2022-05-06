@@ -1,4 +1,5 @@
 using System.Reflection.Metadata;
+using System.Text;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -183,20 +184,44 @@ public class Program
             Description = $"{e.Context.Member.Mention} has ran `/{e.Context.CommandName}` and encountered an exception of type `{e.Exception.GetType()}`.",
             Color = DiscordColor.DarkRed
         };
+        
+        var type = e.Exception.GetType();
 
-        if ( e.Exception is not BadRequestException badRequest )
+        var str = $@"
+            <!-- #region Information -->
+            Error in command {e.Context.CommandName}.
+            Executed by: 
+            <!-- #endregion -->
+
+            <!-- #region {type}.Message -->
+            {e.Exception.Message}
+            <!-- #endregion -- >
+
+            <!-- #region {type}.StackTrace -->
+            {e.Exception.StackTrace}
+            <!-- #endregion -->
+        ";
+
+        if ( e.Exception is BadRequestException badRequest )
         {
-            embed.AddField( $"`{e.Exception.GetType()}.Message`", $"```{e.Exception.Message}```" );
-            embed.AddField( $"`{e.Exception.GetType()}.StackTrace`", $"```{e.Exception.StackTrace}```" );
-        }
-        else
-        {
-            embed.AddField( "`BadRequestException.JsonMessage`", $"```{badRequest.JsonMessage}```" );
-            embed.AddField( "`BadRequestException.Errors`", $"```{badRequest.Errors}```" );
+            str += $@"
+                <!-- #region {type}.JsonMessage -->
+                {badRequest.JsonMessage}
+                <!-- #endregion -->
+
+                <!-- #region {type}.Errors -->
+                {badRequest.Errors}
+                <!-- #endregion -->
+            ";
         }
 
+        var file = File.Create( $"{DateTime.Now:yy/MM/dd}/{e.Context.CommandName}-{Guid.NewGuid()}" );
+        file.Write( Encoding.Default.GetBytes( str )  );
+        
         await e.Context.RespondAsEphemeralAsync( "There was an error running this command. Please try again and contact server developers if the issue persists." );
-        await FloridaStateRoleplay.GetChannel( Config.Current.ErrorLogChannel ).SendMessageAsync( embed );
+        await FloridaStateRoleplay.GetChannel( Config.Current.ErrorLogChannel ).SendMessageAsync(  new DiscordMessageBuilder().WithFile( file ) );
+
+        file.Close();
     }
 
     private async Task OnMessageCreated( DiscordClient sender, MessageCreateEventArgs e )
