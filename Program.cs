@@ -215,7 +215,10 @@ public class Program
             ";
         }
 
-        var file = File.Create( $"{DateTime.Now:yy/MM/dd}/{e.Context.CommandName}-{Guid.NewGuid()}" );
+        var path = $"./data/errors/{DateTime.Now:yy/MM/dd}";
+        Directory.CreateDirectory( path );
+
+        var file = File.Create( $"{path}/{e.Context.CommandName}-{Guid.NewGuid()}" );
         file.Write( Encoding.Default.GetBytes( str )  );
         
         await e.Context.RespondAsEphemeralAsync( "There was an error running this command. Please try again and contact server developers if the issue persists." );
