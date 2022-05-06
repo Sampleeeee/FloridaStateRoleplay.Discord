@@ -188,53 +188,56 @@ public class Program
 
         var type = e.Exception.GetType();
 
-        var str = $@"
-<!-- #region Information -->
-Error in command {e.Context.CommandName}.
-Executed by: 
-<!-- #endregion -->
+        var str = 
+$@"<Information>
+    <Command>{e.Context.CommandName}</Command>
+    <Channel>{e.Context.Channel.Id}</Channel>
+    <RanBy>
+        <DisplayName>{e.Context.Member.DisplayName}</DisplayName>
+        <Id>{e.Context.Member.Id}</Id>
+    </RanBy>
+</Information>
 
-<!-- #region {type}.Message -->
-{e.Exception.Message}
-<!-- #endregion -- >
-
-<!-- #region {type}.StackTrace -->
-{e.Exception.StackTrace}
-<!-- #endregion -->
+<Exception>
+    <Type>{type}</Type>
+    <Message>{e.Exception.Message}</Message>
+    <StackTrace>
+        {e.Exception.StackTrace}
+    </StackTrace>
 ";
 
         if ( e.Exception is BadRequestException badRequest )
         {
             str += $@"
-<!-- #region {type}.JsonMessage -->
-{badRequest.JsonMessage}
-<!-- #endregion -->
-
-<!-- #region {type}.Errors -->
-{badRequest.Errors}
-<!-- #endregion -->
-";
+    <JsonMessage>
+        {badRequest.JsonMessage}
+    </JsonMessage>
+    <Errors>
+        {badRequest.Errors}
+    </Errors>";
         }
+
+        str += "</Exception>";
 
         var path = $"./data/errors/{DateTime.Now:yy/MM/dd}/{e.Context.CommandName}";
         Directory.CreateDirectory( path );
 
         var id = Guid.NewGuid();
-        var file = File.Create( $"{path}/{id}.html" );
+        var file = File.Create( $"{path}/{id}.xml" );
         var buffer = Encoding.Default.GetBytes( str );
         file.Write( buffer, 0, buffer.Length );
         file.Close();
 
         await e.Context.RespondAsEphemeralAsync(
-            $"There was an error running this command. Please try again and contact server developers if the issue persists. {id}" );
+            $"There was an error running this command. Please try again and contact server developers if the issue persists. `{id}`" );
 
-        await using var fs = new FileStream( $"{path}/{id}.html", FileMode.Open, FileAccess.Read );
+        await using var fs = new FileStream( $"{path}/{id}.xml", FileMode.Open, FileAccess.Read );
         
         await FloridaStateRoleplay.GetChannel( Config.Current.ErrorLogChannel )
             .SendMessageAsync( 
                 new DiscordMessageBuilder()
-                    .WithContent( $"Command errored! Ran by {e.Context.Member.Mention}" )
-                    .WithFiles( new Dictionary<string, Stream> { { $"{id}.html", fs } } ) 
+                    .WithContent( $"Command {e.Context.CommandName} errored! Ran by {e.Context.Member.Mention} in {e.Context.Channel.Mention}." )
+                    .WithFiles( new Dictionary<string, Stream> { { $"{id}.xml", fs } } ) 
             );
     }
 
