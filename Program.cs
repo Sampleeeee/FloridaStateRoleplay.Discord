@@ -189,31 +189,31 @@ public class Program
         var type = e.Exception.GetType();
 
         var str = $@"
-            <!-- #region Information -->
-            Error in command {e.Context.CommandName}.
-            Executed by: 
-            <!-- #endregion -->
+<!-- #region Information -->
+Error in command {e.Context.CommandName}.
+Executed by: 
+<!-- #endregion -->
 
-            <!-- #region {type}.Message -->
-            {e.Exception.Message}
-            <!-- #endregion -- >
+<!-- #region {type}.Message -->
+{e.Exception.Message}
+<!-- #endregion -- >
 
-            <!-- #region {type}.StackTrace -->
-            {e.Exception.StackTrace}
-            <!-- #endregion -->
-        ";
+<!-- #region {type}.StackTrace -->
+{e.Exception.StackTrace}
+<!-- #endregion -->
+";
 
         if ( e.Exception is BadRequestException badRequest )
         {
             str += $@"
-                <!-- #region {type}.JsonMessage -->
-                {badRequest.JsonMessage}
-                <!-- #endregion -->
+<!-- #region {type}.JsonMessage -->
+{badRequest.JsonMessage}
+<!-- #endregion -->
 
-                <!-- #region {type}.Errors -->
-                {badRequest.Errors}
-                <!-- #endregion -->
-            ";
+<!-- #region {type}.Errors -->
+{badRequest.Errors}
+<!-- #endregion -->
+";
         }
 
         var path = $"./data/errors/{DateTime.Now:yy/MM/dd}/{e.Context.CommandName}";
