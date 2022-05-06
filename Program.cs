@@ -219,7 +219,8 @@ public class Program
         Directory.CreateDirectory( path );
 
         var file = File.Create( $"{path}/{e.Context.CommandName}-{Guid.NewGuid()}.html" );
-        file.Write( Encoding.Default.GetBytes( str )  );
+        var buffer = Encoding.Default.GetBytes( str );
+        file.Write( buffer, 0, buffer.Length );
         
         await e.Context.RespondAsEphemeralAsync( "There was an error running this command. Please try again and contact server developers if the issue persists." );
         await FloridaStateRoleplay.GetChannel( Config.Current.ErrorLogChannel ).SendMessageAsync(  new DiscordMessageBuilder().WithFile( file ) );
