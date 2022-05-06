@@ -215,10 +215,10 @@ public class Program
             ";
         }
 
-        var path = $"./data/errors/{DateTime.Now:yy/MM/dd}";
+        var path = $"./data/errors/{DateTime.Now:yy/MM/dd}/{e.Context.CommandName}";
         Directory.CreateDirectory( path );
 
-        var file = File.Create( $"{path}/{e.Context.CommandName}-{Guid.NewGuid()}.html" );
+        var file = File.Create( $"{path}/{Guid.NewGuid()}.html" );
         var buffer = Encoding.Default.GetBytes( str );
         file.Write( buffer, 0, buffer.Length );
         
