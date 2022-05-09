@@ -246,6 +246,8 @@ public class Program
 
     private async Task OnMessageDeleted( DiscordClient sender, MessageDeleteEventArgs e )
     {
+        if ( e.Message.Author.IsBot ) return;
+        
         ulong authorId = e.Message.Author.Id;
         string username = e.Message.Author.Username;
         string discriminator = e.Message.Author.Discriminator;
