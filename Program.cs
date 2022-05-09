@@ -192,6 +192,7 @@ public class Program
 
         var str =
             $@"<Information>
+    <Time>{DateTime.Now:MM/dd/yyyy} {DateTime.Now:tt}</Time>
     <Command>{e.Context.CommandName}</Command>
     <Channel>{e.Context.Channel.Id}</Channel>
     <RanBy>
@@ -257,7 +258,8 @@ public class Program
         ulong channelId = e.Channel.Id;
         string channelName = e.Channel.Name;
         
-        string str = $@"<Message>
+        string str = $@"<Time>{DateTime.Now:MM/dd/yyyy} {DateTime.Now:tt}</Time>
+<Message>
     <Id>{id}</Id>
     <Content>{content}</Content>
 </Message>
@@ -301,7 +303,8 @@ public class Program
         ulong channelId = e.Channel.Id;
         string channelName = e.Channel.Name;
         
-        string str = $@"<OriginalMessage>
+        string str = $@"<Time>{DateTime.Now:MM/dd/yyyy} {DateTime.Now:tt}</Time>
+<OriginalMessage>
     <Id>{e.MessageBefore.Id}</Id>
     <Content>{e.MessageBefore.Content}</Content>
 </OriginalMessage>
