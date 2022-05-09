@@ -290,6 +290,8 @@ public class Program
     
     private async Task OnMessageUpdated( DiscordClient sender, MessageUpdateEventArgs e )
     {
+        if ( e.Message.Content == e.MessageBefore.Content ) return;
+        
         ulong authorId = e.Message.Author.Id;
         string username = e.Message.Author.Username;
         string discriminator = e.Message.Author.Discriminator;
