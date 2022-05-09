@@ -67,6 +67,7 @@ public class Program
         Discord.ComponentInteractionCreated += OnComponentInteractionCreated;
         Discord.ModalSubmitted +=  HandleSuggestionModalSubmit;
         Discord.MessageDeleted += OnMessageDeleted;
+        Discord.MessageUpdated += OnMessageUpdated;
 
         Discord.GuildDownloadCompleted += async ( _, args ) =>
         {
@@ -245,19 +246,29 @@ public class Program
 
     private async Task OnMessageDeleted( DiscordClient sender, MessageDeleteEventArgs e )
     {
-        string str =
-$@"<Author>
-    <Id>{e.Message.Author.Id}</Id>
-    <Username>{e.Message.Author.Username}</Username>
-    <Discriminator>{e.Message.Author.Discriminator}</Discriminator>
-</Author>
-<Message>
-    <Id>{e.Message.Id}</Id>
-    <Content>{e.Message.Content}</Content>
-    <Channel>{e.Channel.Name}</Channel>
-    <ChannelId>{e.Channel.Id}</ChannelId>
-</Message>";
+        ulong authorId = e.Message.Author.Id;
+        string username = e.Message.Author.Username;
+        string discriminator = e.Message.Author.Discriminator;
+
+        ulong id = e.Message.Id;
+        string content = e.Message.Content;
+        ulong channelId = e.Channel.Id;
+        string channelName = e.Channel.Name;
         
+        string str = $@"<Message>
+    <Id>{id}</Id>
+    <Content>{content}</Content>
+</Message>
+<Author>
+    <Id>{authorId}</Id>
+    <Username>{username}</Username>
+    <Discriminator>{discriminator}</Discriminator>
+</Author>
+<Channel>
+    <Id>{channelId}</Id>
+    <Name>{channelName}</Name>
+</Channel>";
+
         var path = $"./data/messages/{e.Channel.Id}/deleted";
         Directory.CreateDirectory( path );
 
@@ -272,7 +283,53 @@ $@"<Author>
             .SendMessageAsync(
                 new DiscordMessageBuilder()
                     .WithContent(
-                        $"Message deleted in {e.Channel.Mention}." )
+                        $"__**Message Deleted**__" )
+                    .WithFiles( new Dictionary<string, Stream> { { $"{e.Message.Id}.xml", fs } } )
+            );
+    }
+    
+    private async Task OnMessageUpdated( DiscordClient sender, MessageUpdateEventArgs e )
+    {
+        ulong authorId = e.Message.Author.Id;
+        string username = e.Message.Author.Username;
+        string discriminator = e.Message.Author.Discriminator;
+        
+        ulong channelId = e.Channel.Id;
+        string channelName = e.Channel.Name;
+        
+        string str = $@"<OriginalMessage>
+    <Id>{e.MessageBefore.Id}</Id>
+    <Content>{e.Message.Content}</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>{e.Message.Id}</Id>
+    <Content>{e.Message.Content}</Content>
+</AfterMessage>
+<Author>
+    <Id>{authorId}</Id>
+    <Username>{username}</Username>
+    <Discriminator>{discriminator}</Discriminator>
+</Author>
+<Channel>
+    <Id>{channelId}</Id>
+    <Name>{channelName}</Name>
+</Channel>";
+
+        var path = $"./data/messages/{e.Channel.Id}/deleted";
+        Directory.CreateDirectory( path );
+
+        var file = File.Create( $"{path}/{e.Message.Id}.xml" );
+        var buffer = Encoding.Default.GetBytes( str );
+        file.Write( buffer, 0, buffer.Length );
+        file.Close();
+        
+        await using var fs = new FileStream( $"{path}/{e.Message.Id}.xml", FileMode.Open, FileAccess.Read );
+
+        await FloridaStateRoleplay.GetChannel( Config.Current.MessageLogChannel )
+            .SendMessageAsync(
+                new DiscordMessageBuilder()
+                    .WithContent(
+                        $"__**Message Edited**__" )
                     .WithFiles( new Dictionary<string, Stream> { { $"{e.Message.Id}.xml", fs } } )
             );
     }
