@@ -301,7 +301,7 @@ public class Program
         
         string str = $@"<OriginalMessage>
     <Id>{e.MessageBefore.Id}</Id>
-    <Content>{e.Message.Content}</Content>
+    <Content>{e.MessageBefore.Content}</Content>
 </OriginalMessage>
 <AfterMessage>
     <Id>{e.Message.Id}</Id>
