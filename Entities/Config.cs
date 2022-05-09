@@ -46,6 +46,18 @@ public class Config
         }
     }
 
+    public ulong _messageLogChannel = 973234342153297980;
+
+    public ulong MessageLogChannel
+    {
+        get => _messageLogChannel;
+        set
+        {
+            _messageLogChannel = value;
+            Save();
+        }
+    }
+
     private float _blacklistedWordMaxRatio = 90;
     public float BlacklistedWordMaxRatio
     {

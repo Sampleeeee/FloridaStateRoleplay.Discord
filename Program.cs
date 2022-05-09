@@ -66,6 +66,7 @@ public class Program
         Discord.MessageCreated += OnMessageCreated;
         Discord.ComponentInteractionCreated += OnComponentInteractionCreated;
         Discord.ModalSubmitted +=  HandleSuggestionModalSubmit;
+        Discord.MessageDeleted += OnMessageDeleted;
 
         Discord.GuildDownloadCompleted += async ( _, args ) =>
         {
@@ -188,8 +189,8 @@ public class Program
 
         var type = e.Exception.GetType();
 
-        var str = 
-$@"<Information>
+        var str =
+            $@"<Information>
     <Command>{e.Context.CommandName}</Command>
     <Channel>{e.Context.Channel.Id}</Channel>
     <RanBy>
@@ -232,12 +233,47 @@ $@"<Information>
             $"There was an error running this command. Please try again and contact server developers if the issue persists. `{id}`" );
 
         await using var fs = new FileStream( $"{path}/{id}.xml", FileMode.Open, FileAccess.Read );
-        
+
         await FloridaStateRoleplay.GetChannel( Config.Current.ErrorLogChannel )
-            .SendMessageAsync( 
+            .SendMessageAsync(
                 new DiscordMessageBuilder()
-                    .WithContent( $"Command {e.Context.CommandName} errored! Ran by {e.Context.Member.Mention} in {e.Context.Channel.Mention}." )
-                    .WithFiles( new Dictionary<string, Stream> { { $"{id}.xml", fs } } ) 
+                    .WithContent(
+                        $"Command {e.Context.CommandName} errored! Ran by {e.Context.Member.Mention} in {e.Context.Channel.Mention}." )
+                    .WithFiles( new Dictionary<string, Stream> { { $"{id}.xml", fs } } )
+            );
+    }
+
+    private async Task OnMessageDeleted( DiscordClient sender, MessageDeleteEventArgs e )
+    {
+        string str =
+$@"<Author>
+    <Id>{e.Message.Author.Id}</Id>
+    <Username>{e.Message.Author.Username}</Username>
+    <Discriminator>{e.Message.Author.Discriminator}</Discriminator>
+</Author>
+<Message>
+    <Id>{e.Message.Id}</Id>
+    <Content>{e.Message.Content}</Content>
+    <Channel>{e.Channel.Name}</Channel>
+    <ChannelId>{e.Channel.Id}</ChannelId>
+</Message>";
+        
+        var path = $"./data/messages/{e.Channel.Id}/deleted";
+        Directory.CreateDirectory( path );
+
+        var file = File.Create( $"{path}/{e.Message.Id}.xml" );
+        var buffer = Encoding.Default.GetBytes( str );
+        file.Write( buffer, 0, buffer.Length );
+        file.Close();
+        
+        await using var fs = new FileStream( $"{path}/{e.Message.Id}.xml", FileMode.Open, FileAccess.Read );
+
+        await FloridaStateRoleplay.GetChannel( Config.Current.MessageLogChannel )
+            .SendMessageAsync(
+                new DiscordMessageBuilder()
+                    .WithContent(
+                        $"Message deleted in {e.Channel.Mention}." )
+                    .WithFiles( new Dictionary<string, Stream> { { $"{e.Message.Id}.xml", fs } } )
             );
     }
 
