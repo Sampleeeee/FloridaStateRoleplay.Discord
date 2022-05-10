@@ -247,6 +247,8 @@ public class Program
 
     private async Task OnMessageDeleted( DiscordClient sender, MessageDeleteEventArgs e )
     {
+        var member = await e.Guild.GetMemberOrNullAsync( e.Message.Author.Id );
+        if ( member?.IsManagemenet() ?? false ) return;
         if ( e.Message.Author.IsBot ) return;
         
         ulong authorId = e.Message.Author.Id;
@@ -294,6 +296,10 @@ public class Program
     
     private async Task OnMessageUpdated( DiscordClient sender, MessageUpdateEventArgs e )
     {
+        var member = await e.Guild.GetMemberOrNullAsync( e.Message.Author.Id );
+        if ( member?.IsManagemenet() ?? false ) return;
+        if ( e.Message.Author.IsBot ) return;
+        
         if ( e.Message.Content == e.MessageBefore.Content ) return;
         
         ulong authorId = e.Message.Author.Id;
