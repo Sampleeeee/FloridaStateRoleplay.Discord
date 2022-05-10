@@ -1,0 +1,18 @@
+<Time>05/10/2022 3:24:09 PM</Time>
+<OriginalMessage>
+    <Id>973606351811010590</Id>
+    <Content>what if an important message gets edited</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>973606351811010590</Id>
+    <Content>what if an secretive message gets edited</Content>
+</AfterMessage>
+<Author>
+    <Id>551918087352614952</Id>
+    <Username>sample</Username>
+    <Discriminator>6969</Discriminator>
+</Author>
+<Channel>
+    <Id>973234342153297980</Id>
+    <Name>message-logs</Name>
+</Channel>

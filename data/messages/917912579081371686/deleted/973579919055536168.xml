@@ -1,0 +1,18 @@
+<Time>05/10/2022 1:39:37 PM</Time>
+<OriginalMessage>
+    <Id>973579919055536168</Id>
+    <Content>I was in a call and driving for some reason it says that when I drive</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>973579919055536168</Id>
+    <Content>I was on a call and driving for some reason it says that when I drive</Content>
+</AfterMessage>
+<Author>
+    <Id>285945823311953922</Id>
+    <Username>jpatel700</Username>
+    <Discriminator>0001</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579081371686</Id>
+    <Name>member-chat</Name>
+</Channel>
