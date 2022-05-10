@@ -1,0 +1,25 @@
+<Information>
+    <Command>getallbirthdays</Command>
+    <Channel>972147782376910848</Channel>
+    <RanBy>
+        <DisplayName>smaple</DisplayName>
+        <Id>551918087352614952</Id>
+    </RanBy>
+</Information>
+
+<Exception>
+    <Type>DSharpPlus.Exceptions.NotFoundException</Type>
+    <Message>Not found: 404</Message>
+    <StackTrace>
+           at DSharpPlus.Net.DiscordApiClient.GetGuildMemberAsync(UInt64 guild_id, UInt64 user_id)
+   at DSharpPlus.Entities.DiscordGuild.GetMemberAsync(UInt64 userId)
+   at FloridaStateRoleplay.Discord.Entities.Member.get_DiscordMember() in /home/sample/FloridaStateRoleplay.Discord/Entities/Member.cs:line 47
+   at FloridaStateRoleplay.Discord.Commands.InformationCommands.<>c.<GetAllBirthdaysCommandAsync>b__8_0(Member member) in /home/sample/FloridaStateRoleplay.Discord/Commands/InformationCommands.cs:line 115
+   at System.Linq.Utilities.<>c__DisplayClass1_0`1.<CombinePredicates>b__0(TSource x)
+   at System.Linq.Enumerable.WhereListIterator`1.MoveNext()
+   at System.Linq.Enumerable.Aggregate[TSource,TAccumulate](IEnumerable`1 source, TAccumulate seed, Func`3 func)
+   at FloridaStateRoleplay.Discord.Commands.InformationCommands.GetAllBirthdaysCommandAsync(InteractionContext ctx) in /home/sample/FloridaStateRoleplay.Discord/Commands/InformationCommands.cs:line 115
+   at DSharpPlus.SlashCommands.SlashCommandsExtension.RunCommand(BaseContext context, MethodInfo method, IEnumerable`1 args)
+   at DSharpPlus.SlashCommands.SlashCommandsExtension.<>c__DisplayClass47_0.<<InteractionHandler>b__0>d.MoveNext()
+    </StackTrace>
+</Exception>

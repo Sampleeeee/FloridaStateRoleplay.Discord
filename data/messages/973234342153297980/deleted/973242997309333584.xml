@@ -1,0 +1,14 @@
+<Time>05/09/2022 P PM</Time>
+<Message>
+    <Id>973242997309333584</Id>
+    <Content>a</Content>
+</Message>
+<Author>
+    <Id>551918087352614952</Id>
+    <Username>sample</Username>
+    <Discriminator>6969</Discriminator>
+</Author>
+<Channel>
+    <Id>973234342153297980</Id>
+    <Name>message-logs</Name>
+</Channel>

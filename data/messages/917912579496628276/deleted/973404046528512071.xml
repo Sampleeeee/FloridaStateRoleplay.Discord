@@ -1,0 +1,26 @@
+<Time>05/10/2022 2:00:40 AM</Time>
+<OriginalMessage>
+    <Id>973404046528512071</Id>
+    <Content>Loa
+Boho. Sergeant 
+Start 5/8/2022
+End 5/12/2022
+Reason. Hospital stay....</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>973404046528512071</Id>
+    <Content>Loa
+Boho. Sergeant 
+Start 5/8/2022
+End 5/12/2022 may be extended waiting on tests
+Reason. Hospital stay....</Content>
+</AfterMessage>
+<Author>
+    <Id>395006638874165249</Id>
+    <Username>boho</Username>
+    <Discriminator>1930</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579496628276</Id>
+    <Name>loa-request</Name>
+</Channel>

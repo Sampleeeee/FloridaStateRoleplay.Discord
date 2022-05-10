@@ -1,0 +1,19 @@
+<Information>
+    <Command>mod</Command>
+    <Channel>923603635898834995</Channel>
+    <RanBy>
+        <DisplayName>[C2] Matthew T</DisplayName>
+        <Id>769072084486717440</Id>
+    </RanBy>
+</Information>
+
+<Exception>
+    <Type>System.ArgumentException</Type>
+    <Message>Value cannot be empty or whitespace. (Parameter 'value')</Message>
+    <StackTrace>
+           at DSharpPlus.Entities.DiscordEmbedBuilder.AddField(String name, String value, Boolean inline)
+   at FloridaStateRoleplay.Discord.Commands.OldModerationCommands.MuteCommandAsync(InteractionContext ctx, DiscordUser user, String len, String reason) in /home/sample/FloridaStateRoleplay.Discord/Commands/OldModerationCommands.cs:line 250
+   at DSharpPlus.SlashCommands.SlashCommandsExtension.RunCommand(BaseContext context, MethodInfo method, IEnumerable`1 args)
+   at DSharpPlus.SlashCommands.SlashCommandsExtension.<>c__DisplayClass47_0.<<InteractionHandler>b__0>d.MoveNext()
+    </StackTrace>
+</Exception>

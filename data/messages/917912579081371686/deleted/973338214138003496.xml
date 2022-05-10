@@ -1,0 +1,18 @@
+<Time>05/09/2022 9:38:44 PM</Time>
+<OriginalMessage>
+    <Id>973338214138003496</Id>
+    <Content><@&917912578120904731> Get online or <@731299937186480178> eat lettuce out of the bag again.</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>973338214138003496</Id>
+    <Content><@&917912578120904731> Get online or <@731299937186480178> will eat lettuce out of the bag again.</Content>
+</AfterMessage>
+<Author>
+    <Id>536297752536154132</Id>
+    <Username>!Seth</Username>
+    <Discriminator>2388</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579081371686</Id>
+    <Name>member-chat</Name>
+</Channel>
