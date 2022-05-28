@@ -16,7 +16,12 @@ public static class DiscordMemberX
 
     public static bool IsManagemenet( this DiscordMember member )
     {
-        return member.Roles.Contains( member.Guild.GetRole( 917912578213154911 ) );
+        return member.Roles.Contains( member.Guild.GetRole( 917912578213154911 ) ) || member.IsOwner();
+    }
+
+    public static bool IsOwner( this DiscordMember member )
+    {
+        return member.Roles.Contains( member.Guild.GetRole( 917912578238316558 ) );
     }
 
     public static bool CanKick( this DiscordMember member, DiscordMember target )
