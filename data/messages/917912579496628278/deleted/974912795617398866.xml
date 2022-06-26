@@ -1,0 +1,28 @@
+<Time>05/14/2022 5:56:07 AM</Time>
+<OriginalMessage>
+    <Id>974912795617398866</Id>
+    <Content>Day-Off Template
+
+Name:
+Rank:
+Day Off:All day off requests must be at least 48 hours before the day you want off. No more than 2 days off in 1 month https://docs.google.com/spreadsheets/d/1LKZlQkANcoBpd_p_ZOxoTNwbKD-_OZWnUukM6hFYAIY/edit?usp=sharing</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>974912795617398866</Id>
+    <Content>Day-Off Template
+
+Name:
+Rank:
+Day Off:
+
+All day off requests must be at least 48 hours before the day you want off. No more than 2 days off in 1 month https://docs.google.com/spreadsheets/d/1LKZlQkANcoBpd_p_ZOxoTNwbKD-_OZWnUukM6hFYAIY/edit?usp=sharing</Content>
+</AfterMessage>
+<Author>
+    <Id>589925443784933387</Id>
+    <Username>XGIAssassin</Username>
+    <Discriminator>2901</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579496628278</Id>
+    <Name>day-off-request</Name>
+</Channel>

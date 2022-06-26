@@ -1,0 +1,18 @@
+<Time>05/15/2022 1:33:01 AM</Time>
+<OriginalMessage>
+    <Id>975209134658060308</Id>
+    <Content>Was the training switched to tommorow?</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>975209134658060308</Id>
+    <Content>Was the training switched to tomorrow?</Content>
+</AfterMessage>
+<Author>
+    <Id>502082969889013760</Id>
+    <Username>Javvi</Username>
+    <Discriminator>9721</Discriminator>
+</Author>
+<Channel>
+    <Id>923956724656914523</Id>
+    <Name>ofd-general</Name>
+</Channel>

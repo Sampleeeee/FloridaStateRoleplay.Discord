@@ -1,0 +1,28 @@
+<Time>05/26/2022 4:25:56 PM</Time>
+<OriginalMessage>
+    <Id>979420092116914206</Id>
+    <Content>LOA Request
+Name: Brennan B.
+Rank: Dispatch Supervisor/Senior Dispatcher
+Start: May 26th, 2022
+End: June 9th, 2022
+Reason: pilonidal cyst complications.</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>979420092116914206</Id>
+    <Content>LOA Request
+Name: Brendawg
+Rank: Dispatch Supervisor/Senior Dispatcher
+Start: May 26th, 2022
+End: June 9th, 2022
+Reason: pilonidal cyst complications.</Content>
+</AfterMessage>
+<Author>
+    <Id>317163131023523842</Id>
+    <Username>Brendawg</Username>
+    <Discriminator>4226</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579496628276</Id>
+    <Name>loa-request</Name>
+</Channel>

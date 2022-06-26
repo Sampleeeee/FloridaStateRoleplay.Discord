@@ -1,0 +1,21 @@
+<Information>
+    <Time>06/02/2022 12:39:16 AM</Time>
+    <Command>whois</Command>
+    <Channel>925434760287899678</Channel>
+    <RanBy>
+        <DisplayName>!![SA-7] Logan L</DisplayName>
+        <Id>470298463058264095</Id>
+    </RanBy>
+</Information>
+
+<Exception>
+    <Type>DSharpPlus.Exceptions.NotFoundException</Type>
+    <Message>Not found: 404</Message>
+    <StackTrace>
+           at DSharpPlus.Net.DiscordApiClient.GetGuildMemberAsync(UInt64 guild_id, UInt64 user_id)
+   at DSharpPlus.Entities.DiscordGuild.GetMemberAsync(UInt64 userId)
+   at FloridaStateRoleplay.Discord.Commands.InformationCommands.WhoIsCommandAsync(InteractionContext ctx, DiscordUser user) in /home/sample/FloridaStateRoleplay.Discord/Commands/InformationCommands.cs:line 140
+   at DSharpPlus.SlashCommands.SlashCommandsExtension.RunCommand(BaseContext context, MethodInfo method, IEnumerable`1 args)
+   at DSharpPlus.SlashCommands.SlashCommandsExtension.<>c__DisplayClass47_0.<<InteractionHandler>b__0>d.MoveNext()
+    </StackTrace>
+</Exception>

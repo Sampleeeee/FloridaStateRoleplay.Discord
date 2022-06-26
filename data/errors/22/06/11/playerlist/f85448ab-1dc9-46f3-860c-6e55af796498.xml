@@ -1,0 +1,17 @@
+<Information>
+    <Time>06/11/2022 10:53:43 PM</Time>
+    <Command>playerlist</Command>
+    <Channel>984200210513268746</Channel>
+    <RanBy>
+        <DisplayName>[K-4] Nathan G</DisplayName>
+        <Id>650727202261958667</Id>
+    </RanBy>
+</Information>
+
+<Exception>
+    <Type>System.InvalidOperationException</Type>
+    <Message>A slash command was executed, but no command was registered for it.</Message>
+    <StackTrace>
+           at DSharpPlus.SlashCommands.SlashCommandsExtension.<>c__DisplayClass47_0.<<InteractionHandler>b__0>d.MoveNext()
+    </StackTrace>
+</Exception>

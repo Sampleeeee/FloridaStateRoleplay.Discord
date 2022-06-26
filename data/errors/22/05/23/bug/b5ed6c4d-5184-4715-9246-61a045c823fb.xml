@@ -1,0 +1,17 @@
+<Information>
+    <Time>05/23/2022 8:23:48 PM</Time>
+    <Command>bug</Command>
+    <Channel>925434760287899678</Channel>
+    <RanBy>
+        <DisplayName>[CS] [CAR-5] Chris W.</DisplayName>
+        <Id>772600061627465749</Id>
+    </RanBy>
+</Information>
+
+<Exception>
+    <Type>System.InvalidOperationException</Type>
+    <Message>A slash command was executed, but no command was registered for it.</Message>
+    <StackTrace>
+           at DSharpPlus.SlashCommands.SlashCommandsExtension.<>c__DisplayClass47_0.<<InteractionHandler>b__0>d.MoveNext()
+    </StackTrace>
+</Exception>

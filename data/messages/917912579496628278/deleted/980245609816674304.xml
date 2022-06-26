@@ -1,0 +1,18 @@
+<Time>05/28/2022 11:06:10 PM</Time>
+<OriginalMessage>
+    <Id>980245609816674304</Id>
+    <Content>Needs to be 48hours in advance</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>980245609816674304</Id>
+    <Content>Needs to be 48 hours in advance</Content>
+</AfterMessage>
+<Author>
+    <Id>509507201572798464</Id>
+    <Username>'.</Username>
+    <Discriminator>0999</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579496628278</Id>
+    <Name>day-off-request</Name>
+</Channel>

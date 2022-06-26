@@ -1,0 +1,28 @@
+<Time>05/26/2022 3:43:54 AM</Time>
+<OriginalMessage>
+    <Id>979228162015785010</Id>
+    <Content>LOA Request
+Name: Alfred
+Rank: ECM, Reserve Trooper 2
+Start: 5/26/22
+End: 6/1/22
+Reason: Going on vacation. Will still be available on discord</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>979228162015785010</Id>
+    <Content>LOA Request
+Name: Alfred
+Rank: ECM, Reserve Trooper 2
+Start: 5/26/22
+End: 5/31/22
+Reason: Going on vacation. Will still be available on discord</Content>
+</AfterMessage>
+<Author>
+    <Id>757712635557838888</Id>
+    <Username>Goon1</Username>
+    <Discriminator>5371</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579496628276</Id>
+    <Name>loa-request</Name>
+</Channel>

@@ -1,0 +1,20 @@
+<Information>
+    <Time>06/24/2022 7:57:44 AM</Time>
+    <Command>mod</Command>
+    <Channel>961451775813103617</Channel>
+    <RanBy>
+        <DisplayName>[D-1] Dom</DisplayName>
+        <Id>509507201572798464</Id>
+    </RanBy>
+</Information>
+
+<Exception>
+    <Type>DSharpPlus.Exceptions.NotFoundException</Type>
+    <Message>Not found: 404</Message>
+    <StackTrace>
+           at DSharpPlus.Net.DiscordApiClient.CreateInteractionResponseAsync(UInt64 interaction_id, String interaction_token, InteractionResponseType type, DiscordInteractionResponseBuilder builder)
+   at FloridaStateRoleplay.Discord.Commands.OldModerationCommands.UnstickyCommandAsync(InteractionContext ctx) in /home/sample/FloridaStateRoleplay.Discord/Commands/OldModerationCommands.cs:line 590
+   at DSharpPlus.SlashCommands.SlashCommandsExtension.RunCommand(BaseContext context, MethodInfo method, IEnumerable`1 args)
+   at DSharpPlus.SlashCommands.SlashCommandsExtension.<>c__DisplayClass47_0.<<InteractionHandler>b__0>d.MoveNext()
+    </StackTrace>
+</Exception>

@@ -1,0 +1,18 @@
+<Time>05/16/2022 8:07:31 PM</Time>
+<OriginalMessage>
+    <Id>975851982441033829</Id>
+    <Content>I’m on a car</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>975851982441033829</Id>
+    <Content>I’m in a car</Content>
+</AfterMessage>
+<Author>
+    <Id>632699596811927615</Id>
+    <Username>DH</Username>
+    <Discriminator>1918</Discriminator>
+</Author>
+<Channel>
+    <Id>917912580218060818</Id>
+    <Name>owners-chat</Name>
+</Channel>

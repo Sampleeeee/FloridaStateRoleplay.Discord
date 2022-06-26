@@ -1,0 +1,18 @@
+<Time>05/23/2022 9:00:35 PM</Time>
+<OriginalMessage>
+    <Id>978402030483816478</Id>
+    <Content><@326568880019472394> Hey, are you avilabler to do mine?</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>978402030483816478</Id>
+    <Content><@326568880019472394> Hey, are you able to do mine?</Content>
+</AfterMessage>
+<Author>
+    <Id>305073781901230080</Id>
+    <Username>Kyle W.</Username>
+    <Discriminator>7536</Discriminator>
+</Author>
+<Channel>
+    <Id>917912578708090881</Id>
+    <Name>interview-needed</Name>
+</Channel>

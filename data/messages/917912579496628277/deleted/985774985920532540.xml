@@ -1,0 +1,22 @@
+<Time>06/13/2022 5:17:58 AM</Time>
+<OriginalMessage>
+    <Id>985774985920532540</Id>
+    <Content>Name: [R-16]B.Cat
+Rank: Patrol Officer
+Role: Patrol Officer in Teamspeak</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>985774985920532540</Id>
+    <Content>Name: [R-17] J. Daniels
+Rank: Patrol Officer
+Role: Patrol Officer in Teamspeak</Content>
+</AfterMessage>
+<Author>
+    <Id>263803881790767107</Id>
+    <Username>Trepha</Username>
+    <Discriminator>2442</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579496628277</Id>
+    <Name>role-request</Name>
+</Channel>

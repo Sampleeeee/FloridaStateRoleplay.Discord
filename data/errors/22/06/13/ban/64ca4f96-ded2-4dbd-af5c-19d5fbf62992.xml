@@ -1,0 +1,17 @@
+<Information>
+    <Time>06/13/2022 12:36:01 AM</Time>
+    <Command>ban</Command>
+    <Channel>923603635898834995</Channel>
+    <RanBy>
+        <DisplayName>[D-2] Dom</DisplayName>
+        <Id>509507201572798464</Id>
+    </RanBy>
+</Information>
+
+<Exception>
+    <Type>System.InvalidOperationException</Type>
+    <Message>A slash command was executed, but no command was registered for it.</Message>
+    <StackTrace>
+           at DSharpPlus.SlashCommands.SlashCommandsExtension.<>c__DisplayClass47_0.<<InteractionHandler>b__0>d.MoveNext()
+    </StackTrace>
+</Exception>

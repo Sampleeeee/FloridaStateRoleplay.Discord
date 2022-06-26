@@ -1,0 +1,18 @@
+<Time>06/12/2022 6:18:19 AM</Time>
+<OriginalMessage>
+    <Id>985427799147937832</Id>
+    <Content>already been handlers</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>985427799147937832</Id>
+    <Content>already been handled</Content>
+</AfterMessage>
+<Author>
+    <Id>145407504178741249</Id>
+    <Username>Sir LordGlizzy</Username>
+    <Discriminator>8956</Discriminator>
+</Author>
+<Channel>
+    <Id>923603635898834995</Id>
+    <Name>general-chat</Name>
+</Channel>

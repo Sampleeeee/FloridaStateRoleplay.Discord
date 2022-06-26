@@ -1,0 +1,20 @@
+<Time>06/26/2022 1:29:19 AM</Time>
+<OriginalMessage>
+    <Id>990428500764807208</Id>
+    <Content>name:Andrewwww
+role: interview needed</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>990428500764807208</Id>
+    <Content>name: Andrewwww
+role: interview needed</Content>
+</AfterMessage>
+<Author>
+    <Id>575396117618098176</Id>
+    <Username>Andrewwww</Username>
+    <Discriminator>8631</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579496628277</Id>
+    <Name>role-request</Name>
+</Channel>

@@ -1,0 +1,18 @@
+<Time>06/17/2022 8:07:03 PM</Time>
+<OriginalMessage>
+    <Id>987448289618190366</Id>
+    <Content>It expires on the 31</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>987448289618190366</Id>
+    <Content>It expires on the 31st</Content>
+</AfterMessage>
+<Author>
+    <Id>769072084486717440</Id>
+    <Username>AlexZander is Cute</Username>
+    <Discriminator>3667</Discriminator>
+</Author>
+<Channel>
+    <Id>923603635898834995</Id>
+    <Name>general-chat</Name>
+</Channel>

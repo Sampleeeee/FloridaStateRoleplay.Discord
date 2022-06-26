@@ -1,0 +1,20 @@
+<Time>06/26/2022 1:53:29 AM</Time>
+<OriginalMessage>
+    <Id>990434465903947797</Id>
+    <Content>Name: nozone
+Role: interview</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>990434465903947797</Id>
+    <Content>Name: nozone
+Role: Interview Needed</Content>
+</AfterMessage>
+<Author>
+    <Id>834059476351975464</Id>
+    <Username>nozone</Username>
+    <Discriminator>5979</Discriminator>
+</Author>
+<Channel>
+    <Id>917912579496628277</Id>
+    <Name>role-request</Name>
+</Channel>

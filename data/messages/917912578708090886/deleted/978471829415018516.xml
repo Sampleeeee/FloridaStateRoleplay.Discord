@@ -1,0 +1,18 @@
+<Time>05/24/2022 1:37:52 AM</Time>
+<OriginalMessage>
+    <Id>978471829415018516</Id>
+    <Content>all these tickets able to beclosed <@&917912578179604545></Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>978471829415018516</Id>
+    <Content>all these tickets able to be closed? <@&917912578179604545></Content>
+</AfterMessage>
+<Author>
+    <Id>431832286988730389</Id>
+    <Username>fin</Username>
+    <Discriminator>0006</Discriminator>
+</Author>
+<Channel>
+    <Id>917912578708090886</Id>
+    <Name>ticket-chat</Name>
+</Channel>

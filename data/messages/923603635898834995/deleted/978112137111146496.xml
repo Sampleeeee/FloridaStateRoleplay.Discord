@@ -1,0 +1,18 @@
+<Time>05/23/2022 1:48:36 AM</Time>
+<OriginalMessage>
+    <Id>978112137111146496</Id>
+    <Content><@400430142221975553> yo what up can</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>978112137111146496</Id>
+    <Content><@400430142221975553> yo what up cam</Content>
+</AfterMessage>
+<Author>
+    <Id>632699596811927615</Id>
+    <Username>DH</Username>
+    <Discriminator>1918</Discriminator>
+</Author>
+<Channel>
+    <Id>923603635898834995</Id>
+    <Name>general-chat</Name>
+</Channel>

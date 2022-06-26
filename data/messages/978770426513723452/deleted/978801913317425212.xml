@@ -1,0 +1,18 @@
+<Time>05/24/2022 11:29:26 PM</Time>
+<OriginalMessage>
+    <Id>978801913317425212</Id>
+    <Content>All good, Do you need anything esle or am i good to close this ?</Content>
+</OriginalMessage>
+<AfterMessage>
+    <Id>978801913317425212</Id>
+    <Content>All good, Do you need anything else or am i good to close this ?</Content>
+</AfterMessage>
+<Author>
+    <Id>431832286988730389</Id>
+    <Username>fin</Username>
+    <Discriminator>0006</Discriminator>
+</Author>
+<Channel>
+    <Id>978770426513723452</Id>
+    <Name>ticket-0086</Name>
+</Channel>
