@@ -163,6 +163,13 @@ public class InformationCommands : ApplicationCommandModule
             await ctx.RespondAsEphemeralAsync( "Failed to get user from database." );
             return;
         }
+
+        List<DiscordRole> interviewRoles = member.InterviewNeededRoles;
+        if ( interviewRoles.Count > 0 )
+        {
+            string str = interviewRoles.Aggregate( "", ( str, role ) => str + $"{role.Mention}\n" );
+            embed.AddField( $"Needs Interview For [{interviewRoles.Count}]", str.TrimEnd() );
+        }
         
         if ( member.Birthday is not null )
             embed.AddField( "Birthday", $"{member.Birthday.Date:d}", true );

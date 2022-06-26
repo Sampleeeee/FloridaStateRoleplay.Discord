@@ -24,6 +24,11 @@ public static class DiscordMemberX
         return member.Roles.Contains( member.Guild.GetRole( 917912578238316558 ) );
     }
 
+    public static bool HasApplicationPermissions( this DiscordMember member )
+    {
+        return member.Roles.Contains( member.Guild.GetRole( 928758108749197312 ) );
+    }
+
     public static bool CanKick( this DiscordMember member, DiscordMember target )
     {
         return member.Hierarchy > target.Hierarchy;

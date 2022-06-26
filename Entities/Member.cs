@@ -7,7 +7,7 @@ namespace FloridaStateRoleplay.Discord.Entities;
 
 public class Member
 {
-    private static Dictionary<ulong, Member> _members = new();
+    #region Properties / Fields
     
     public ulong Id { get; set; }
     public Birthday? Birthday { get; set; }
@@ -57,6 +57,11 @@ public class Member
 
     [JsonIgnore] public DateTime NextXpDrop = DateTime.MinValue;
     
+    #endregion
+    #region Static Members
+
+    private static Dictionary<ulong, Member> _members = new();
+    
     public static async Task<Member> FromId( ulong id )
     {
         if ( _members.ContainsKey( id ) )
@@ -71,6 +76,43 @@ public class Member
         return member;
     }
 
+    public static async Task<Member?> FromUser( DiscordUser? user )
+    {
+        if ( user is null ) return null;
+        return await FromId( user.Id );
+    }
+
+    public static IEnumerable<Member> All
+    {
+        get
+        {
+            var members = new List<Member>();
+            foreach ( ( ulong id, var member ) in _members )
+                members.Add( member );
+
+            return members;
+        }
+    }
+
+    public static async Task Initialize()
+    {
+        const string path = "./data/members.json";
+
+        string json = await File.ReadAllTextAsync( path );
+        _members = JsonConvert.DeserializeObject<Dictionary<ulong, Member>>( json ) ?? new Dictionary<ulong, Member>();
+    }
+
+    public static async Task SaveAllAsync()
+    {
+        const string path = "./data/members.json";
+
+        string json = JsonConvert.SerializeObject( _members );
+        await File.WriteAllTextAsync( path, json );
+    }
+    
+    #endregion
+    #region Moderation
+    
     public async Task Unmute( Member staff, string reason )
     {
         if ( DiscordMember is null ) return;
@@ -162,52 +204,59 @@ public class Member
         await SaveAsync();
     }
     
-    public static IEnumerable<Member> All
+    #endregion
+    #region Interviews
+
+    private List<ulong> _interviewNeededRoleIds { get; set; } = new();
+
+    [JsonIgnore]
+    public List<DiscordRole> InterviewNeededRoles
     {
         get
         {
-            var members = new List<Member>();
-            foreach ( ( ulong id, var member ) in _members )
-                members.Add( member );
+            var list = new List<DiscordRole>();
 
-            return members;
+            foreach ( ulong id in _interviewNeededRoleIds )
+                if ( Program.FloridaStateRoleplay.Roles.TryGetValue( id, out var role ) )
+                    list.Add( role );
+
+            return list;
         }
     }
 
-    public static async Task Initialize()
-    {
-        const string path = "./data/members.json";
+    public bool IsInterviewNeededFor( ulong roleid ) =>
+        _interviewNeededRoleIds.Contains( roleid );
 
-        string json = await File.ReadAllTextAsync( path );
-        _members = JsonConvert.DeserializeObject<Dictionary<ulong, Member>>( json ) ?? new Dictionary<ulong, Member>();
+    public bool IsInterviewNeededFor( DiscordRole role ) =>
+        IsInterviewNeededFor( role.Id );
+
+    public async Task NeedsInterviewFor( DiscordRole role )
+    {
+        if ( _interviewNeededRoleIds.Contains( role.Id ) ) return;
+        
+        _interviewNeededRoleIds.Add( role.Id );
+        await SaveAsync();
     }
 
-    public async Task SaveAsync()
+    public async Task NoLongerNeedsInterviewFor( DiscordRole role )
     {
-        await SaveAllAsync();
+        if ( !_interviewNeededRoleIds.Contains( role.Id ) ) return;
+
+        _interviewNeededRoleIds.Remove( role.Id );
+        await SaveAsync();
     }
 
-    public static async Task SaveAllAsync()
-    {
-        const string path = "./data/members.json";
+    #endregion
+    #region XP
 
-        string json = JsonConvert.SerializeObject( _members );
-        await File.WriteAllTextAsync( path, json );
-    }
-
-    public static async Task<Member> FromUser( DiscordUser? user )
-    {
-        if ( user is null ) return null;
-        return await FromId( user.Id );
-    }
-
-    public async Task AddExperienceAsync( DiscordGuild guild, DiscordUser user, bool sendMessage = true, float modifier = 1f )
+    public async Task AddExperienceAsync( DiscordGuild guild, DiscordUser user, bool sendMessage = true,
+        float modifier = 1f )
     {
         uint beforeLevel = Level;
         ulong beforeXp = Experience;
 
         Experience += Convert.ToUInt64( new Random().Next( 0, 31 ) * modifier );
-        Console.WriteLine( $"Updating {DiscordMember?.DisplayName ?? user.Username }'s xp. {beforeXp} => {Experience}" );
+        Console.WriteLine( $"Updating {DiscordMember?.DisplayName ?? user.Username}'s xp. {beforeXp} => {Experience}" );
 
         if ( beforeLevel != 0 && sendMessage )
             if ( beforeLevel != Level )
@@ -215,5 +264,12 @@ public class Member
                     .SendMessageAsync( $"{Mention} has leveled up to level {Level}!" );
 
         NextXpDrop = DateTime.Now + TimeSpan.FromMinutes( 0.5 );
+    }
+
+    #endregion
+
+    public async Task SaveAsync()
+    {
+        await SaveAllAsync();
     }
 }
