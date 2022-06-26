@@ -125,9 +125,18 @@ public class Program
         var button = new DiscordButtonComponent( ButtonStyle.Primary, "create_feature_request",
             "Create Feature Request" );
 
+        string content =
+            $"__**Quick Description**__\n{e.Values["fr-desc"]}\n\n__**Additional Context**__\n{e.Values["fr-context"]}";
+
+        if ( !string.IsNullOrWhiteSpace( e.Values["fr-links"] ) )
+        {
+            content += $"\n\n__**Links**__\n{e.Values["fr-links"]}";
+        }
+
+        content += $"\n\nSubmitted by: <@{e.Interaction.User.Id}>";
+
         var builder = new DiscordMessageBuilder()
-            .WithContent(
-                $"__**Quick Description**__\n{e.Values["fr-desc"]}\n\n__**Additional Context**__\n{e.Values["fr-context"]}\n\n__**Links**__\n{e.Values["fr-links"]}\n\nSubmitted by: <@{e.Interaction.User.Id}>" )
+            .WithContent( content )
             .AddComponents( button );
 
         var message = await channel.SendMessageAsync( builder );
@@ -145,9 +154,18 @@ public class Program
         var button =
             new DiscordButtonComponent( ButtonStyle.Primary, "create_bug_report", "Create Bug Report" );
 
+        string content =
+            $"__**Describe the bug**__\n{e.Values["br-desc"]}\n\n__**To Reproduce**__\n{e.Values["br-steps"]}\n\n__**Expected Behavior**__\n{e.Values["br-behavior"]}";
+
+        if ( !string.IsNullOrWhiteSpace( e.Values["br-screenshots"] ) )
+        {
+            content += $"\n\n__**Screenshots**__\n{e.Values["br-screenshots"]}";
+        }
+
+        content += $"\n\nSubmitted by: <@{e.Interaction.User.Id}>";
+        
         var builder = new DiscordMessageBuilder()
-            .WithContent(
-                $"__**Describe the bug**__\n{e.Values["br-desc"]}\n\n__**To Reproduce**__\n{e.Values["br-steps"]}\n\n__**Expected Behavior**__\n{e.Values["br-behavior"]}\n\n__**Screenshots**__\n{e.Values["br-screenshots"]}\n\nSubmitted by: <@{e.Interaction.User.Id}>" )
+            .WithContent( content )
             .AddComponents( button );
 
         var channel = e.Interaction.Guild.GetChannel( 917912579660197955 );
