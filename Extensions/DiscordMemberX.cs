@@ -24,6 +24,11 @@ public static class DiscordMemberX
         return member.Roles.Contains( member.Guild.GetRole( 917912578238316558 ) );
     }
 
+    public static bool IsTicketSupport( this DiscordMember member )
+    {
+        return member.Roles.Contains( member.Guild.GetRole( 917912578179604540 ) );
+    }
+
     public static bool HasApplicationPermissions( this DiscordMember member )
     {
         return member.Roles.Contains( member.Guild.GetRole( 928758108749197312 ) );

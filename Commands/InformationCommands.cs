@@ -57,13 +57,6 @@ public class InformationCommands : ApplicationCommandModule
         await ctx.RespondAsync( str );
     }
 
-    [SlashCommand( "banappeal", "Get a link to create a ban appeal." )]
-    public async Task BanAppealCommmandAsync( InteractionContext ctx )
-    {
-        const string str = "You can create a ban appeal by reacting to this message: https://canary.discord.com/channels/917912577768566835/917912578708090882/924427892434296862";
-        await ctx.RespondAsync( str );
-    }
-
     [SlashCommand( "pingjay", "ping jay and maybe if you're lucky say something other than hi" )]
     public async Task PingJayCommandAsync( InteractionContext ctx )
     {
