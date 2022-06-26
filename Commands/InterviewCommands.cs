@@ -31,7 +31,7 @@ public class InterviewCommands : ApplicationCommandModule
         var embed = new DiscordEmbedBuilder
         {
             Title = "Application Accepted",
-            Description = $"Your application to {role.Mention} has been accepted! Please head over to <#990682102880141332> to begin the interview process.\n\nIf you require any assistance, please contact {ctx.Member.Mention}.",
+            Description = $"Your application to {role.Mention} has been accepted! Please head over to <#917912578708090881> to begin the interview process.\n\nIf you require any assistance, please contact {ctx.Member.Mention}.",
             Author = new DiscordEmbedBuilder.EmbedAuthor
             {
                 IconUrl = "https://cdn.penathon.wtf/i/logo.png",
