@@ -165,12 +165,15 @@ public class InterviewCommands : ApplicationCommandModule
             }
         }
 
-        string message = $"Users in need of an interview for {role.Mention}: ";
+        string message = $"Users in need of an interview for {role.Mention} [{list.Count}]: ";
 
         foreach ( var member in list )
             message += $"{member.Mention} ";
 
         message = message.Trim();
+
+        if ( list.Count == 0 )
+            message = $"No one needs an interview for {role.Mention}.";
 
         if ( silent )
             await ctx.RespondAsEphemeralAsync( message );
