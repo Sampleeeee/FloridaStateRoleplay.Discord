@@ -105,7 +105,7 @@ public class InterviewCommands : ApplicationCommandModule
         await discordMember.GrantRoleAsync( ctx.Guild.GetRole( 917912578087338035 ) );
 
         var channel = ctx.Guild.GetChannel( 917912578464841745 );
-        await channel.SendMessageAsync( embed );
+        await channel.SendMessageAsync( user.Mention, embed: embed );
 
         await ctx.RespondAsEphemeralAsync( $"Successfully denied {user.Mention} for an interview with {role.Mention}." );
     }
