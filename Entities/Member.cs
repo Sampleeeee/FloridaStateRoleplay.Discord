@@ -207,7 +207,7 @@ public class Member
     #endregion
     #region Interviews
 
-    private List<ulong> _interviewNeededRoleIds { get; set; } = new();
+    public List<ulong> _interviewNeededRoleIds { get; set; } = new();
 
     [JsonIgnore]
     public List<DiscordRole> InterviewNeededRoles

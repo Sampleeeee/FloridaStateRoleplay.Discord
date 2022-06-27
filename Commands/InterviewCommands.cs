@@ -148,4 +148,33 @@ public class InterviewCommands : ApplicationCommandModule
 
         await ctx.RespondAsEphemeralAsync( $"Successfully marked {user.Mention} as interviewed." );
     }
+
+    [SlashCommand( "list", "Lists the members who need an interview for a role." )]
+    public async Task ListCommandAsync( InteractionContext ctx, [Option( "role", "The role to check" )] DiscordRole role, [Option("silent", "Should the message be sent as a silent response")] bool silent = true )
+    {
+        var list = new List<DiscordMember>();
+        
+        foreach ( var member in Member.All )
+        {
+            if ( member._interviewNeededRoleIds.Contains( role.Id ) )
+            {
+                var dmember = member.DiscordMember;
+                
+                if ( dmember is not null )
+                    list.Add( dmember );
+            }
+        }
+
+        string message = $"Users in need of an interview for {role.Mention}: ";
+
+        foreach ( var member in list )
+            message += $"{member.Mention} ";
+
+        message = message.Trim();
+
+        if ( silent )
+            await ctx.RespondAsEphemeralAsync( message );
+        else
+            await ctx.RespondAsync( message );
+    }
 }
