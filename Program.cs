@@ -380,7 +380,9 @@ public class Program
         if ( e.Author.IsBot ) 
             return false;
 
-        if ( e.Message.Content.ToLower().Contains( "http://" ) || e.Message.Content.Contains( "https://" ) )
+        var content = e.Message.Content.ToLower();
+
+        if ( content.Contains( "http://" ) || content.Contains( "https://" ) )
             return false;
 
         if ( e.Message.Attachments.Count > 0 )

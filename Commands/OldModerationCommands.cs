@@ -550,7 +550,7 @@ public class OldModerationCommands : ApplicationCommandModule
         foreach ( var sticky in stickies )
             Config.Current.Stickies.Remove( sticky );
 
-        Config.Current.Stickies.Add( new Sticky
+        Config.Current.AddSticky( new Sticky
         {
             Title = title,
             Message = text,

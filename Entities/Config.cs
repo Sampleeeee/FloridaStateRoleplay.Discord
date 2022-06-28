@@ -301,4 +301,10 @@ public class Config
         Current.Channels.Remove( key );
         Save();
     }
+
+    public void AddSticky( Sticky sticky )
+    {
+        _stickies.Add( sticky );
+        Save();
+    }
 }
