@@ -52,6 +52,12 @@ public class InterviewCommands : ApplicationCommandModule
             Color = DiscordColor.Green
         };
 
+        var discordMember = member.DiscordMember;
+        if ( discordMember is null )
+            throw new Exception( "DiscordMember is null" );
+        
+        await discordMember.GrantRoleAsync( ctx.Guild.GetRole( 917912578087338035 ) );
+        
         var channel = ctx.Guild.GetChannel( 917912578464841745 );
         await channel.SendMessageAsync( user.Mention, embed: embed );
 
@@ -97,12 +103,6 @@ public class InterviewCommands : ApplicationCommandModule
         };
 
         await member.NoLongerNeedsInterviewFor( role );
-
-        var discordMember = member.DiscordMember;
-        if ( discordMember is null )
-            throw new Exception( "DiscordMember is null" );
-
-        await discordMember.GrantRoleAsync( ctx.Guild.GetRole( 917912578087338035 ) );
 
         var channel = ctx.Guild.GetChannel( 917912578464841745 );
         await channel.SendMessageAsync( user.Mention, embed: embed );
