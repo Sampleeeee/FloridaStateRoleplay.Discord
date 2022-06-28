@@ -307,4 +307,10 @@ public class Config
         _stickies.Add( sticky );
         Save();
     }
+
+    public void RemoveSticky( Sticky sticky )
+    {
+        _stickies.Remove( sticky );
+        Save();
+    }
 }

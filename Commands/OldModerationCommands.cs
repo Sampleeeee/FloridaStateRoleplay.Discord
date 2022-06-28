@@ -585,7 +585,7 @@ public class OldModerationCommands : ApplicationCommandModule
         List<Sticky> stickies = Config.Current.Stickies.Where( x => x.Channel == ctx.Channel.Id ).ToList();
 
         foreach ( var sticky in stickies )
-            Config.Current.Stickies.Remove( sticky );
+            Config.Current.RemoveSticky( sticky );
         
         await ctx.Interaction.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
             new DiscordInteractionResponseBuilder().WithContent( "Sticky removed." ) );
