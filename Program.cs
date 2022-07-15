@@ -265,6 +265,8 @@ public class Program
 
     private async Task OnMessageDeleted( DiscordClient sender, MessageDeleteEventArgs e )
     {
+        if ( e.Message is null ) return;
+        
         var member = await e.Guild.GetMemberOrNullAsync( e.Message.Author.Id );
         if ( member?.IsManagemenet() ?? false ) return;
         if ( e.Message.Author.IsBot ) return;
@@ -293,11 +295,11 @@ public class Program
     <Name>{channelName}</Name>
 </Channel>";
 
-        var path = $"./data/messages/{e.Channel.Id}/deleted";
+        string path = $"./data/messages/{e.Channel.Id}/deleted";
         Directory.CreateDirectory( path );
 
         var file = File.Create( $"{path}/{e.Message.Id}.xml" );
-        var buffer = Encoding.Default.GetBytes( str );
+        byte[] buffer = Encoding.Default.GetBytes( str );
         file.Write( buffer, 0, buffer.Length );
         file.Close();
         
@@ -314,10 +316,12 @@ public class Program
     
     private async Task OnMessageUpdated( DiscordClient sender, MessageUpdateEventArgs e )
     {
+        if ( e.Message is null || e.MessageBefore is null ) return;
+        
         var member = await e.Guild.GetMemberOrNullAsync( e.Message.Author.Id );
         if ( member?.IsManagemenet() ?? false ) return;
         if ( e.Message.Author.IsBot ) return;
-        
+
         if ( e.Message.Content == e.MessageBefore.Content ) return;
         
         ulong authorId = e.Message.Author.Id;
