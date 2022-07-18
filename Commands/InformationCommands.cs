@@ -79,7 +79,9 @@ public class InformationCommands : ApplicationCommandModule
     public async Task BirthdayCommandAsync( InteractionContext ctx, [Option("birthday", "Your birthdate, or 'remove' to remove your birthday from our database.")] string input = "remove" )
     {
         var member = await Member.FromId( ctx.Member.Id );
-        if ( member.DiscordMember is null ) return;
+
+        var discordMember = await member.GetDiscordMemberAsync();
+        if ( discordMember is null ) return;
 
         if ( input is "" or "remove" )
         {
@@ -105,7 +107,7 @@ public class InformationCommands : ApplicationCommandModule
     [SlashCommand( "getallbirthdays", "Get every member's birthday in our database." )]
     public async Task GetAllBirthdaysCommandAsync( InteractionContext ctx )
     {
-        string response = ( from member in Member.All where member.DiscordMember is not null where member.Birthday is not null select member ).Aggregate( string.Empty, ( current, member ) => current + $"**{member.DiscordMember.DisplayName}**: {member.Birthday.Date:d}\n" );
+        string response = ( from member in Member.All where member.GetDiscordMemberAsync().GetAwaiter().GetResult() is not null where member.Birthday is not null select member ).Aggregate( string.Empty, ( current, member ) => current + $"**{member.GetDiscordMemberAsync().GetAwaiter().GetResult()?.DisplayName ?? $"{member.Id}"}**: {member.Birthday.Date:d}\n" );
 
         if ( response == string.Empty )
             response = "No birthdays have been set!";
@@ -117,13 +119,15 @@ public class InformationCommands : ApplicationCommandModule
     public async Task GetBirthdayCommandAsync( InteractionContext ctx, [Option("mention", "the mention of the member you want to target")] DiscordUser user )
     {
         var member = await Member.FromId( user.Id );
-        if ( member?.DiscordMember is null ) return;
+
+        var discordMember = await member.GetDiscordMemberAsync();
+        if ( discordMember is null ) return;
         
         if ( member.Birthday is null )
             await ctx.RespondAsync(
-                $"{member.DiscordMember.Mention} has not set a birthday yet! (they can do so by typing /birthday!)" );
+                $"{discordMember.Mention} has not set a birthday yet! (they can do so by typing /birthday!)" );
         else
-            await ctx.RespondAsync( $"{member.DiscordMember.Mention}'s birthday is on {member.Birthday.Date:d}" );
+            await ctx.RespondAsync( $"{discordMember.Mention}'s birthday is on {member.Birthday.Date:d}" );
     }
 
     [SlashCommand( "whois", "Get information about a user" )]

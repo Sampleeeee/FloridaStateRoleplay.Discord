@@ -36,24 +36,18 @@ public class Member
         }
     }
 
-    [JsonIgnore] private DiscordMember? _discordMember = null;
-    
-    [JsonIgnore]
-    public DiscordMember? DiscordMember
+    public async Task<DiscordMember?> GetDiscordMemberAsync()
     {
-        get
-        {
-            if ( _discordMember is null )
-                _discordMember = Program.FloridaStateRoleplay.GetMemberAsync( Id ).GetAwaiter().GetResult();
-
-            return _discordMember ?? null;
-        }
+        if ( !Program.FloridaStateRoleplay.Members.ContainsKey( Id ) )
+            return null;
+        
+        return await Program.FloridaStateRoleplay.GetMemberAsync( Id );
     }
     
-    [JsonIgnore] public string Mention => DiscordMember?.Mention ?? $"<@{Id}>";
+    [JsonIgnore] public string Mention => $"<@{Id}>";
     
     [JsonIgnore] public bool Muted => 
-        DiscordMember?.Roles.Contains( Program.FloridaStateRoleplay.GetRole( Program.MutedRoleId ) ) ?? false;
+        GetDiscordMemberAsync().GetAwaiter().GetResult()?.Roles.Contains( Program.FloridaStateRoleplay.GetRole( Program.MutedRoleId ) ) ?? false;
 
     [JsonIgnore] public DateTime NextXpDrop = DateTime.MinValue;
     
@@ -115,7 +109,8 @@ public class Member
     
     public async Task Unmute( Member staff, string reason )
     {
-        if ( DiscordMember is null ) return;
+        var discordMember = await GetDiscordMemberAsync();
+        if ( discordMember is null ) return;
 
         var lastMute = Punishments.FirstOrDefault( x => x.Type == PunishmentType.Mute && x.Expired == false );
         if ( lastMute is null ) return;
@@ -124,7 +119,7 @@ public class Member
         lastMute.RevokeReason = reason;
         lastMute.RevokerId = staff.Id;
         
-        await DiscordMember.RevokeRoleAsync( Program.FloridaStateRoleplay.GetRole( Program.MutedRoleId ) );
+        await discordMember.RevokeRoleAsync( Program.FloridaStateRoleplay.GetRole( Program.MutedRoleId ) );
         await SaveAsync();
     }
 
@@ -256,7 +251,7 @@ public class Member
         ulong beforeXp = Experience;
 
         Experience += Convert.ToUInt64( new Random().Next( 0, 31 ) * modifier );
-        Console.WriteLine( $"Updating {DiscordMember?.DisplayName ?? user.Username}'s xp. {beforeXp} => {Experience}" );
+        Console.WriteLine( $"Updating {(await GetDiscordMemberAsync())?.DisplayName ?? user.Username}'s xp. {beforeXp} => {Experience}" );
 
         if ( beforeLevel != 0 && sendMessage )
             if ( beforeLevel != Level )

@@ -52,7 +52,7 @@ public class InterviewCommands : ApplicationCommandModule
             Color = DiscordColor.Green
         };
 
-        var discordMember = member.DiscordMember;
+        var discordMember = await member.GetDiscordMemberAsync();
         if ( discordMember is null )
             throw new Exception( "DiscordMember is null" );
         
@@ -134,7 +134,7 @@ public class InterviewCommands : ApplicationCommandModule
 
         await member.NoLongerNeedsInterviewFor( role );
 
-        var discordMember = member.DiscordMember;
+        var discordMember = await member.GetDiscordMemberAsync();
         if ( discordMember is null )
             throw new Exception( "DiscordMember is null" );
         
@@ -158,7 +158,7 @@ public class InterviewCommands : ApplicationCommandModule
         {
             if ( member._interviewNeededRoleIds.Contains( role.Id ) )
             {
-                var dmember = member.DiscordMember;
+                var dmember = await member.GetDiscordMemberAsync();
                 
                 if ( dmember is not null )
                     list.Add( dmember );

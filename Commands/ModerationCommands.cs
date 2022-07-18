@@ -14,6 +14,9 @@ public class ModerationCommands : ApplicationCommandModule
         var staff = await Member.FromId( ctx.Member.Id );
         var target = await Member.FromId( user.Id );
 
+        var staffDiscord = await staff.GetDiscordMemberAsync();
+        var targetDiscord = await target.GetDiscordMemberAsync();
+
         async Task InsufficientPermissions()
         {
             await ctx.RespondAsEphemeralAsync( "You do not have permission to use this command." );
@@ -22,13 +25,13 @@ public class ModerationCommands : ApplicationCommandModule
             {
                 Title = "Insufficient Permissions",
                 Description =
-                    $"{ctx.Member.Mention} tried to run command '/kick' on <@{target.DiscordMember.Id}> but does not have the proper permissions."
+                    $"{ctx.Member.Mention} tried to run command '/kick' on <@{target.Id}> but does not have the proper permissions."
             };
 
             await Program.StaffModLogAsync( builder );
         }
         
-        if ( target.DiscordMember is null )
+        if ( targetDiscord is null )
         {
             await ctx.RespondAsEphemeralAsync( "We could not find this user!" );
             return;
@@ -40,7 +43,7 @@ public class ModerationCommands : ApplicationCommandModule
             return;
         }
 
-        if ( !ctx.Member.CanKick( target.DiscordMember ) )
+        if ( !ctx.Member.CanKick( targetDiscord ) )
         {
             await InsufficientPermissions();
             return;
