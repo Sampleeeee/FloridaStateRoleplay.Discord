@@ -11,6 +11,8 @@ public class TicketComands : ApplicationCommandModule
     [SlashCommand( "test", "testing ticket command" )]
     public async Task TestTicketCommandAsync( InteractionContext ctx )
     {
+        var options = new List<DiscordSelectComponentOption>();
+        
         foreach ( var type in Config.Current.TicketTypes )
             if ( !string.IsNullOrWhiteSpace( type.Emoji ) )
                 options.Add( new DiscordSelectComponentOption( type.Title, type.Title, null, false,
