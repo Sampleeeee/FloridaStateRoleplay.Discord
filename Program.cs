@@ -11,6 +11,7 @@ using FloridaStateRoleplay.Discord.Commands;
 using FloridaStateRoleplay.Discord.Entities;
 using FloridaStateRoleplay.Discord.Extensions;
 using FuzzySharp;
+using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
 
 namespace FloridaStateRoleplay.Discord;
@@ -114,6 +115,12 @@ public class Program
     {
         await HandleSuggestionButton( e );
         await HandleBugReportButton( e );
+        await HandleCreateTicketDropdownAsync( e );
+    }
+
+    private async Task HandleCreateTicketDropdownAsync( ComponentInteractionCreateEventArgs e )
+    {
+        await e.Channel.SendMessageAsync( JsonConvert.SerializeObject( e ) );
     }
 
     private async Task HandleSuggestionModalSubmit( ModalSubmitEventArgs e )
