@@ -37,9 +37,9 @@ public class TicketComands : ApplicationCommandModule
         };
 
         foreach ( var type in Config.Current.TicketTypes )
-            if ( type.Emoji is ulong emoji )
+            if ( type.Emoji is string emoji )
                 options.Add( new DiscordSelectComponentOption( type.Title, type.Title, null, false,
-                    new DiscordComponentEmoji( emoji ) ) );
+                    new DiscordComponentEmoji( DiscordEmoji.FromName( Program.Discord, emoji ) ) ) );
             else
                 options.Add( new DiscordSelectComponentOption( type.Title, type.Title ) );
 

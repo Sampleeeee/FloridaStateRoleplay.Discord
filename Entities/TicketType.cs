@@ -23,7 +23,7 @@ public class TicketType
     /// <summary>
     /// The emoji to show next to the ticket
     /// </summary>
-    public ulong? Emoji { get; set; }
+    public string? Emoji { get; set; }
     
     /// <summary>
     /// The automatically sent message when the ticket is first created.
@@ -35,7 +35,7 @@ public class TicketType
     /// <param name="title"><see cref="Title"/></param>
     /// <param name="message"><see cref="OriginalMessage" /></param>
     /// <param name="emoji"><see cref="Emoji" /></param>
-    public TicketType( ulong role, ulong category, string title, string message, ulong? emoji = null )
+    public TicketType( ulong role, ulong category, string title, string message, string? emoji = null )
     {
         Role = role;
         Title = title;

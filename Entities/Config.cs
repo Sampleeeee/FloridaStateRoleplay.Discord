@@ -145,16 +145,17 @@ public class Config
 
     public readonly TicketType[] TicketTypes =
     {
-        new( 917912578179604545, 917912578464841747, "General Support", "", 999919553456898108 ),
-        new( 917912578179604545, 917912578464841747, "Ban Appeal",
-            "Please send a screenshot of your ban and and a staff member will be with you shortly.",
-            999919553456898108 ),
-        new( 917912578213154911, 955541854487707728, "Management Team", "", 999919553456898108 ),
-        new( 551918087352614952, 956279565750243388, "Development Team", "", 999919553456898108 ),
-        new( 917912578146074640, 917912578464841747, "Florida Department of Law Enforcement", "", 999919553456898108 ),
-        new( 917912578120904731, 917912578464841747, "Civilian Department", "", 999919553456898108 ),
-        new( 917912578146074637, 917912578464841747, "Hillsborough Fire Department", "", 999919553456898108 ),
-        new( 954356034040897608, 917912578464841747, "Communications Department", "", 999919553456898108 ),
+        new( 917912578179604545, 917912578464841747, "General Support", "", ":speech_left:" ),
+        new( 917912578179604545, 917912578464841747, "Ban Appeal", 
+            "Please send a screenshot of your ban and and a staff member will be with you shortly.", 
+            ":page_facing_up:" ),
+        new( 917912578213154911, 955541854487707728, "Management Team", "", ":crown:" ),
+        new( 551918087352614952, 956279565750243388, "Development Team", "", ":hammer:" ),
+        new( 917912578146074640, 917912578464841747, "Florida Department of Law Enforcement", "",
+            ":oncoming_police_car:" ),
+        new( 917912578120904731, 917912578464841747, "Civilian Department", "", ":man_beard:" ),
+        new( 917912578146074637, 917912578464841747, "Hillsborough Fire Department", "", ":fire:" ),
+        new( 954356034040897608, 917912578464841747, "Communications Department", "", ":radio:" ),
     };
 
     private bool _levelingEnabled = true;
