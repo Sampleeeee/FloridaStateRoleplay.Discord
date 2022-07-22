@@ -153,7 +153,7 @@ public class Config
         new( 551918087352614952, 956279565750243388, "Development Team", "", ":hammer:" ),
         new( 917912578146074640, 917912578464841747, "Florida Department of Law Enforcement", "",
             ":oncoming_police_car:" ),
-        new( 917912578120904731, 917912578464841747, "Civilian Department", "", ":man_beard:" ),
+        new( 917912578120904731, 917912578464841747, "Civilian Department", "", ":adult:" ),
         new( 917912578146074637, 917912578464841747, "Hillsborough Fire Department", "", ":fire:" ),
         new( 954356034040897608, 917912578464841747, "Communications Department", "", ":radio:" ),
     };
