@@ -6,7 +6,7 @@ using FloridaStateRoleplay.Discord.Extensions;
 namespace FloridaStateRoleplay.Discord.Commands;
 
 [SlashCommandGroup( "ticket", "Ticket commands" )]
-public class TicketComands : ApplicationCommandModule
+public class TicketCommands : ApplicationCommandModule
 {
     [SlashCommand( "test", "testing ticket command" )]
     public async Task TestTicketCommandAsync( InteractionContext ctx )

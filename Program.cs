@@ -48,7 +48,7 @@ public class Program
         await Member.Initialize();
 
         var commands = Discord.UseSlashCommands();
-        commands.RegisterCommands<UtilityCommands, InformationCommands, OldModerationCommands, InterviewCommands, BanAppealCommands, TicketComands>( 917912577768566835 );
+        commands.RegisterCommands<UtilityCommands, InformationCommands, OldModerationCommands, InterviewCommands, BanAppealCommands, TicketCommands>( 917912577768566835 );
 
         var timer = new Timer
         {
