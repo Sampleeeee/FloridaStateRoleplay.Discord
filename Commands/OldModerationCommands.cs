@@ -158,6 +158,13 @@ public class OldModerationCommands : ApplicationCommandModule
         [Option( "reason", "The reason for banning this user." )] string reason )
     {
         var length = new TimeAway( len );
+        
+        if ( string.IsNullOrWhiteSpace( $"{length}" ) )
+        {
+            await ctx.RespondAsEphemeralAsync(
+                "Invalid length entered. Ex: perm or #[y/mo/d/h/m/s], 5d4h6m = 5 days, 4 hours, 6 minutes" );
+            return;
+        }
 
         if ( !ctx.Member.IsStaff() )
         {
@@ -234,6 +241,13 @@ public class OldModerationCommands : ApplicationCommandModule
         string reason )
     {
         var length = new TimeAway( len );
+
+        if ( string.IsNullOrWhiteSpace( $"{length}" ) )
+        {
+            await ctx.RespondAsEphemeralAsync(
+                "Invalid length entered. Ex: perm or #[y/mo/d/h/m/s], 5d4h6m = 5 days, 4 hours, 6 minutes" );
+            return;
+        }
         
         if ( !ctx.Member.IsStaff() )
         {
@@ -287,8 +301,18 @@ public class OldModerationCommands : ApplicationCommandModule
             };
         
             builder.AddField( "Reason", reason );
-            builder.AddField( "Length", $"{length}" );
-        
+
+            try
+            {
+                builder.AddField( "Length", $"{length}" );
+            }
+            catch
+            {
+                await ctx.RespondAsEphemeralAsync(
+                    "Invalid length entered. Ex: perm or #[y/mo/d/h/m/s], 5d4h6m = 5 days, 4 hours, 6 minutes" );
+                return;
+            }
+
             await Program.StaffModLogAsync( builder );
         }
         
@@ -545,7 +569,7 @@ public class OldModerationCommands : ApplicationCommandModule
             return;
         }
 
-        List<Sticky> stickies = Config.Current.Stickies.Where( x => x.Channel == ctx.Channel.Id ).ToList();
+        var stickies = Config.Current.Stickies.Where( x => x.Channel == ctx.Channel.Id ).ToList();
 
         foreach ( var sticky in stickies )
             Config.Current.Stickies.Remove( sticky );
