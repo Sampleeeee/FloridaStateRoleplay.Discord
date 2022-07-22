@@ -120,8 +120,7 @@ public class Program
 
     private async Task HandleCreateTicketDropdownAsync( ComponentInteractionCreateEventArgs e )
     {
-        await e.Interaction.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
-            new DiscordInteractionResponseBuilder().WithContent( JsonConvert.SerializeObject( e ) ) );
+        Console.WriteLine( JsonConvert.SerializeObject( e ) );
     }
 
     private async Task HandleSuggestionModalSubmit( ModalSubmitEventArgs e )
