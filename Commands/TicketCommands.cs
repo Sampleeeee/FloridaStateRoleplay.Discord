@@ -23,6 +23,7 @@ public class TicketCommands : ApplicationCommandModule
         var dropdown = new DiscordSelectComponent("dropdown", null, options, false, 1, 2);
 
         await ctx.RespondAsync( new DiscordInteractionResponseBuilder()
+            .WithContent( "__**Create a Ticket**__" )
             .WithCustomId( "create_ticket_button" )
             .AddComponents( dropdown ) 
         );
