@@ -35,7 +35,7 @@ public class Program
 
     public async Task MainAsync()
     {
-        Config.Initalize();
+        Config.Initialize();
         
         Discord = new DiscordClient( new DiscordConfiguration
         {
@@ -48,7 +48,7 @@ public class Program
         await Member.Initialize();
 
         var commands = Discord.UseSlashCommands();
-        commands.RegisterCommands<UtilityCommands, InformationCommands, OldModerationCommands, InterviewCommands, BanAppealCommands>( 917912577768566835 );
+        commands.RegisterCommands<UtilityCommands, InformationCommands, OldModerationCommands, InterviewCommands, BanAppealCommands, TicketComands>( 917912577768566835 );
 
         var timer = new Timer
         {

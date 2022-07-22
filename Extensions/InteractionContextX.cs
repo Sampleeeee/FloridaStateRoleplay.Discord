@@ -18,6 +18,12 @@ public static class InteractionContextX
             new DiscordInteractionResponseBuilder().AddEmbed( builder ) );
     }
 
+    public static async Task RespondAsync( this InteractionContext ctx, DiscordInteractionResponseBuilder builder )
+    {
+        await ctx.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
+            builder );
+    }
+
     public static async Task RespondAsEphemeralAsync( this InteractionContext ctx, string message )
     {
         await ctx.CreateResponseAsync( InteractionResponseType.ChannelMessageWithSource,
