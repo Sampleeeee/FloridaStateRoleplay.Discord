@@ -37,7 +37,7 @@ public class TicketComands : ApplicationCommandModule
         };
 
         foreach ( var type in Config.Current.TicketTypes )
-            if ( type.Emoji is string emoji )
+            if ( !string.IsNullOrWhiteSpace( type.Emoji ) )
                 options.Add( new DiscordSelectComponentOption( type.Title, type.Title, null, false,
                     new DiscordComponentEmoji( DiscordEmoji.FromName( Program.Discord, emoji ) ) ) );
             else
