@@ -54,7 +54,10 @@ public class InterviewCommands : ApplicationCommandModule
 
         var discordMember = await member.GetDiscordMemberAsync();
         if ( discordMember is null )
-            throw new Exception( "DiscordMember is null" );
+        {
+            await ctx.RespondAsEphemeralAsync( "This user is no longer in the guild." );
+            return;
+        }
         
         await discordMember.GrantRoleAsync( ctx.Guild.GetRole( 917912578087338035 ) );
         
@@ -136,7 +139,10 @@ public class InterviewCommands : ApplicationCommandModule
 
         var discordMember = await member.GetDiscordMemberAsync();
         if ( discordMember is null )
-            throw new Exception( "DiscordMember is null" );
+        {
+            await ctx.RespondAsEphemeralAsync( "This user is no longer in the guild." );
+            return;
+        }
         
         // interview needed role
         if ( member.InterviewNeededRoles.Count == 0 )
