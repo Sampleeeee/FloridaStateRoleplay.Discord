@@ -115,7 +115,7 @@ public class Program
     {
         await HandleSuggestionButton( e );
         await HandleBugReportButton( e );
-        await HandleCreateTicketDropdownAsync( e );
+        // await HandleCreateTicketDropdownAsync( e );
     }
 
     private async Task HandleCreateTicketDropdownAsync( ComponentInteractionCreateEventArgs e )
