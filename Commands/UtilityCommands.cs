@@ -129,7 +129,7 @@ public class UtilityCommands : ApplicationCommandModule
     [SlashCommand( "sample", "aaa" )]
     public async Task ASKJFHAKJSFHKAJ( InteractionContext ctx )
     {
-        await ctx.Member.RevokeRoleAsync( ctx.Guild.GetRole( 917912578238316554 ) )
+        await ctx.Member.RevokeRoleAsync( ctx.Guild.GetRole( 917912578238316554 ) );
     }
     
 }
