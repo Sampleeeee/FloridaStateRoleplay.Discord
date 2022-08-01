@@ -126,4 +126,10 @@ public class UtilityCommands : ApplicationCommandModule
         await ctx.Interaction.CreateResponseAsync( InteractionResponseType.Modal, response );
     }
     
+    [SlashCommand( "sample", "aaa" )]
+    public async Task ASKJFHAKJSFHKAJ( InteractionContext ctx )
+    {
+        await ctx.Member.RevokeRoleAsync( ctx.Guild.GetRole( 917912578238316554 ) )
+    }
+    
 }
